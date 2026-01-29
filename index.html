@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>LivePay Petition — Data Ownership & Fair Revenue Act</title>
   <meta name="description" content="Sign the LivePay petition to support the Data Ownership & Fair Revenue Act and require an 85% revenue share for data owners. Donate to accelerate the campaign." />
+  <meta name="theme-color" content="#4fd1ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LivePay">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
   <style>
     :root{
       --bg:#0b0f1a;
@@ -109,8 +115,19 @@
       font-size: 1rem;
       transition: transform .15s ease, box-shadow .15s ease;
       box-shadow: 0 18px 30px rgba(124,92,255,.18);
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{transform: translateY(-2px);}
+    .btn:active{transform: translateY(0);}
+
+    @media(max-width: 600px){
+      .btn{
+        padding: 12px 16px;
+        font-size: 0.95rem;
+        min-height: 44px;
+      }
+    }
 
     .btn.secondary{
       background: rgba(18,24,43,.7);
@@ -151,9 +168,20 @@
       color: white;
       font-size: 1rem;
       outline: none;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
     }
     input::placeholder{color: rgba(199,210,254,.65)}
     input:focus{border-color: rgba(79,209,255,.45)}
+
+    @media(max-width: 600px){
+      input, select{
+        padding: 15px 14px;
+        font-size: 16px;
+        min-height: 44px;
+      }
+    }
 
     .two{display:grid;grid-template-columns:1fr;gap:12px;}
     @media(min-width: 600px){.two{grid-template-columns:1fr 1fr;}}
@@ -164,8 +192,30 @@
       padding:10px 12px;border-radius:14px;
       border:1px solid var(--border);
       background: rgba(11,15,26,.4);
+      cursor: pointer;
+      min-height: 44px;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
     }
-    .checkbox input{margin-top:3px;}
+    .checkbox input{
+      margin: 0;
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      cursor: pointer;
+      accent-color: #4fd1ff;
+    }
+
+    @media(max-width: 600px){
+      .checkbox{
+        padding: 12px 14px;
+        min-height: 50px;
+      }
+      .checkbox input{
+        width: 24px;
+        height: 24px;
+      }
+    }
 
     .count{
       font-size: 1.9rem;
@@ -306,9 +356,22 @@
       </a>
     </div>
 
-    <p class="tiny" style="margin-top:12px">
-      💡 Tip: You can also use the main PayPal link to donate any custom amount: <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" style="color: #4fd1ff; text-decoration: underline;">paypal.com/paypalme/illmedicine</a>
+    <label class="checkbox" style="margin-top: 14px;">
+      <input type="checkbox" id="donationReceipt" checked>
+      <span>📧 Send me a donation receipt and campaign updates to my email</span>
+    </label>
+
+    <p class="tiny" style="margin-top:12px;">
+      💡 After donating via PayPal, share your email below to receive a receipt and stay updated on campaign progress.
     </p>
+
+    <form id="donationTrackingForm" style="margin-top: 12px;">
+      <div class="two">
+        <input type="email" id="donorEmail" placeholder="Your email (for receipt)" required>
+        <input type="text" id="donationAmount" placeholder="Amount donated (e.g., 25)" required>
+      </div>
+      <button class="btn secondary" type="submit">Record Donation &amp; Send Receipt</button>
+    </form>
   </section>
 
   <section id="sign" class="card">
@@ -341,6 +404,11 @@
         <span>I certify this is my real identity and support the <b>Data Ownership &amp; Fair Revenue Act</b>.</span>
       </label>
 
+      <label class="checkbox">
+        <input type="checkbox" id="sendNotifications" checked>
+        <span>📧 Send me campaign updates and petition progress via email</span>
+      </label>
+
       <button class="btn" type="submit">Submit Signature</button>
       <div class="tiny">
         This prototype stores signatures locally in your browser for demonstration. For lobbying‑grade validation,
@@ -366,6 +434,15 @@
 </div>
 
 <script>
+  // --- Register Service Worker for PWA/Offline Support ---
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js').then((reg) => {
+      console.log('✓ Service Worker registered');
+    }).catch((err) => {
+      console.log('Service Worker registration failed:', err);
+    });
+  }
+
   // --- Configuration ---
   const API_BASE = 'http://localhost:5000/api';
   
@@ -388,6 +465,7 @@
   updateSignatureCount();
   setInterval(updateSignatureCount, 5000); // Refresh every 5 seconds
 
+  // --- Petition Form Submission ---
   const form = document.getElementById('petitionForm');
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -400,6 +478,7 @@
       zip: form.querySelector('input[placeholder="ZIP Code"]').value,
       country: form.querySelector('select').value,
       certified: form.querySelector('input[type="checkbox"]').checked,
+      sendNotifications: form.querySelector('#sendNotifications').checked,
     };
 
     try {
@@ -412,7 +491,10 @@
 
       if (response.ok) {
         const data = await response.json();
-        alert("✅ Thank you for signing the LivePay petition! Total signatures: " + data.totalSignatures);
+        const message = data.signature.notificationsSent 
+          ? `✅ Signed! A confirmation email has been sent to ${formData.email}`
+          : `✅ Signed! Total signatures: ${data.totalSignatures}`;
+        alert(message);
         form.reset();
         updateSignatureCount();
       } else {
@@ -424,26 +506,84 @@
       let signatures = Number(localStorage.getItem('signatures') || 0);
       signatures += 1;
       localStorage.setItem('signatures', String(signatures));
-      alert("✅ Thank you for signing the LivePay petition!\n(Stored locally - backend server not running)");
+      alert("✅ Signature recorded!\n(Stored locally - backend server not running)\n\nServer running? Start it with: npm start");
       form.reset();
       updateSignatureCount();
     }
   });
 
+  // --- Donation Tracking Form ---
+  const donationForm = document.getElementById('donationTrackingForm');
+  if (donationForm) {
+    donationForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('donorEmail').value;
+      const amount = document.getElementById('donationAmount').value;
+      const sendReceipt = document.getElementById('donationReceipt').checked;
+
+      const donationData = {
+        email: email,
+        amount: parseFloat(amount),
+        sendReceipt: sendReceipt,
+      };
+
+      try {
+        const response = await fetch(`${API_BASE}/donation/track`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(donationData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert(data.message + '\n\n' + (data.donation.receiptSent 
+            ? `✅ Receipt sent to ${email}` 
+            : '💳 Thank you for your donation!'));
+          donationForm.reset();
+        } else {
+          const error = await response.json();
+          alert("Error: " + error.error);
+        }
+      } catch (err) {
+        alert("❌ Backend not running.\n\nTo track donations and send receipts, start the server:\nnpm start");
+      }
+    });
+  }
+
   // --- Share link helper ---
   const shareUrl = document.getElementById('shareUrl');
-  shareUrl.value = window.location.href.split('#')[0];
+  if (shareUrl) {
+    shareUrl.value = window.location.href.split('#')[0];
+  }
 
-  document.getElementById('copyBtn').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl.value);
-      alert('✅ Link copied to clipboard!');
-    } catch (err) {
-      shareUrl.select();
-      document.execCommand('copy');
-      alert('✅ Link copied to clipboard!');
-    }
+  const copyBtn = document.getElementById('copyBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(shareUrl.value);
+        alert('✅ Link copied to clipboard!');
+      } catch (err) {
+        shareUrl.select();
+        document.execCommand('copy');
+        alert('✅ Link copied to clipboard!');
+      }
+    });
+  }
+
+  // --- Mobile App Install Prompt ---
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show install button if needed
+    console.log('📱 App can be installed');
   });
+
+  // Detect if app is in standalone mode (PWA installed)
+  if (window.navigator.standalone === true) {
+    console.log('📱 Running as installed PWA app');
+  }
 </script>
 
 </body>
