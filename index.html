@@ -278,36 +278,36 @@
       Donations accelerate platform development, policy advocacy, security infrastructure, and national awareness campaigns. Help us build a future where people — not corporations — benefit from their data.
     </p>
 
-    <!-- Replace the link below with your real Stripe Payment Link -->
-    <a href="https://buy.stripe.com/test_placeholder" target="_blank" class="btn donate-btn">
-      Donate Securely via Stripe
+    <!-- PayPal Donation Link -->
+    <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" class="btn donate-btn">
+      Donate via PayPal
     </a>
   </section>
 
   <section id="donate" class="card">
-    <h2>Donate (Stripe)</h2>
+    <h2>Donate via PayPal</h2>
     <p class="muted">
-      Want to accelerate the movement? Use Stripe to donate securely.
-      <b>Replace the placeholder links below</b> with your Stripe Payment Links (no backend required).
+      Support the LivePay movement and help us build a future where people benefit from their data.
+      <b>All donations are processed securely through PayPal</b>.
     </p>
 
     <div class="donate-grid">
-      <a class="donate-btn" id="donate25" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+      <a class="donate-btn" id="donate25" href="https://www.paypal.com/paypalme/illmedicine/25" target="_blank" rel="noopener">
         Donate $25
         <small>Fuel outreach + signature growth</small>
       </a>
-      <a class="donate-btn" id="donate50" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+      <a class="donate-btn" id="donate50" href="https://www.paypal.com/paypalme/illmedicine/50" target="_blank" rel="noopener">
         Donate $50
         <small>Support policy + legal engagement</small>
       </a>
-      <a class="donate-btn" id="donate100" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+      <a class="donate-btn" id="donate100" href="https://www.paypal.com/paypalme/illmedicine/100" target="_blank" rel="noopener">
         Donate $100
         <small>Build infrastructure + credibility</small>
       </a>
     </div>
 
     <p class="tiny" style="margin-top:12px">
-      Tip: In Stripe Dashboard → Payment Links → Create link → set amount → copy the "buy.stripe.com" URL and paste it here.
+      💡 Tip: You can also use the main PayPal link to donate any custom amount: <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" style="color: #4fd1ff; text-decoration: underline;">paypal.com/paypalme/illmedicine</a>
     </p>
   </section>
 
@@ -366,19 +366,68 @@
 </div>
 
 <script>
-  // --- Demo-only local signature counter ---
-  let signatures = Number(localStorage.getItem('signatures') || 0);
-  const signatureCountEl = document.getElementById('signatureCount');
-  signatureCountEl.innerText = signatures + " Signatures";
+  // --- Configuration ---
+  const API_BASE = 'http://localhost:5000/api';
+  
+  // --- Fetch signature count from backend ---
+  async function updateSignatureCount() {
+    try {
+      const response = await fetch(`${API_BASE}/petition/signatures/count`);
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('signatureCount').innerText = data.count + " Signatures";
+      }
+    } catch (err) {
+      // Fallback to localStorage if backend unavailable
+      let signatures = Number(localStorage.getItem('signatures') || 0);
+      document.getElementById('signatureCount').innerText = signatures + " Signatures";
+    }
+  }
+
+  // Initialize on page load
+  updateSignatureCount();
+  setInterval(updateSignatureCount, 5000); // Refresh every 5 seconds
 
   const form = document.getElementById('petitionForm');
-  form.addEventListener('submit', function(e){
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    signatures += 1;
-    localStorage.setItem('signatures', String(signatures));
-    signatureCountEl.innerText = signatures + " Signatures";
-    alert("Thank you for signing the LivePay petition!");
-    form.reset();
+
+    const formData = {
+      fullName: form.querySelector('input[placeholder="Full Name"]').value,
+      email: form.querySelector('input[placeholder="Email Address"]').value,
+      city: form.querySelector('input[placeholder="City"]').value,
+      state: form.querySelector('input[placeholder="State"]').value,
+      zip: form.querySelector('input[placeholder="ZIP Code"]').value,
+      country: form.querySelector('select').value,
+      certified: form.querySelector('input[type="checkbox"]').checked,
+    };
+
+    try {
+      // Try to submit to backend
+      const response = await fetch(`${API_BASE}/petition/sign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("✅ Thank you for signing the LivePay petition! Total signatures: " + data.totalSignatures);
+        form.reset();
+        updateSignatureCount();
+      } else {
+        const error = await response.json();
+        alert("⚠️ " + (error.error || "Error submitting signature"));
+      }
+    } catch (err) {
+      // Fallback to localStorage
+      let signatures = Number(localStorage.getItem('signatures') || 0);
+      signatures += 1;
+      localStorage.setItem('signatures', String(signatures));
+      alert("✅ Thank you for signing the LivePay petition!\n(Stored locally - backend server not running)");
+      form.reset();
+      updateSignatureCount();
+    }
   });
 
   // --- Share link helper ---
@@ -386,14 +435,13 @@
   shareUrl.value = window.location.href.split('#')[0];
 
   document.getElementById('copyBtn').addEventListener('click', async () => {
-    try{
+    try {
       await navigator.clipboard.writeText(shareUrl.value);
-      alert('Link copied!');
-    }catch(err){
-      // fallback
+      alert('✅ Link copied to clipboard!');
+    } catch (err) {
       shareUrl.select();
       document.execCommand('copy');
-      alert('Link copied!');
+      alert('✅ Link copied to clipboard!');
     }
   });
 </script>

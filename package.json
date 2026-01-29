@@ -1,0 +1,27 @@
+{
+  "name": "livepay-petition-backend",
+  "version": "1.0.0",
+  "description": "Backend server for LivePay petition tracking and donation management",
+  "main": "backend-server.js",
+  "scripts": {
+    "start": "node backend-server.js",
+    "dev": "nodemon backend-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "livepay",
+    "petition",
+    "donations",
+    "paypal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
