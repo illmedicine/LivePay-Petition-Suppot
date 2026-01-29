@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LivePay Petition — Data Ownership & Fair Revenue Act</title>
+  <meta name="description" content="Sign the LivePay petition to support the Data Ownership & Fair Revenue Act and require an 85% revenue share for data owners. Donate to accelerate the campaign." />
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --panel:#12182b;
+      --panel2:#0f1526;
+      --text:#ffffff;
+      --muted:#c7d2fe;
+      --muted2:#8b9cff;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 20px 40px rgba(0,0,0,.4);
+      --grad:linear-gradient(90deg,#4fd1ff,#7c5cff);
+    }
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.25), transparent 60%),
+                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.18), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+    }
+
+    .container{max-width:980px;margin:auto;padding:26px 18px 60px;}
+
+    /* Top bar */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(11,15,26,.65);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:980px;margin:auto;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 18px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .mark{
+      width:34px;height:34px;border-radius:10px;
+      background: var(--grad);
+      box-shadow: 0 10px 25px rgba(79,209,255,.18);
+      position:relative;
+    }
+    .mark:after{
+      content:"";
+      position:absolute;inset:9px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.65);
+      opacity:.55;
+    }
+    .brand .name{font-weight:800;letter-spacing:.2px;}
+    .brand .tag{font-size:.85rem;color:var(--muted2)}
+
+    .nav{display:flex;gap:10px;align-items:center;}
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(18,24,43,.6);
+      color: var(--muted);
+      padding:10px 12px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:.9rem;
+    }
+    .chip:hover{border-color: rgba(255,255,255,.18)}
+
+    /* Hero */
+    .hero{text-align:center;margin:34px 0 34px;}
+    .kicker{
+      display:inline-flex;gap:10px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(18,24,43,.6);
+      color:var(--muted);
+      font-size:.9rem;
+      margin-bottom:16px;
+    }
+    .kicker b{color:#fff}
+
+    .hero h1{
+      font-size: clamp(2.15rem, 5vw, 3.15rem);
+      margin: 0 0 12px;
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1.05;
+      letter-spacing:-.5px;
+    }
+    .hero p{font-size:1.1rem;color:var(--muted);max-width:760px;margin:0 auto 18px;}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      background: var(--grad);
+      padding: 14px 20px;
+      border-radius: 14px;
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 18px 30px rgba(124,92,255,.18);
+    }
+    .btn:hover{transform: translateY(-2px);}
+
+    .btn.secondary{
+      background: rgba(18,24,43,.7);
+      border:1px solid var(--border);
+      box-shadow:none;
+      font-weight:700;
+    }
+
+    .row-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+    /* Cards */
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;}
+    @media(min-width: 860px){
+      .grid{grid-template-columns: 1.2fr .8fr;align-items:start;}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(18,24,43,.95), rgba(15,21,38,.95));
+      padding: 22px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      border:1px solid var(--border);
+    }
+
+    h2{margin:0 0 10px;font-size:1.35rem;}
+    .muted{color:var(--muted)}
+
+    ul{margin:10px 0 0 18px;color:var(--muted);}
+    li{margin:6px 0;}
+
+    /* Form */
+    form{display:grid;gap:12px;}
+    input, select{
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(11,15,26,.6);
+      color: white;
+      font-size: 1rem;
+      outline: none;
+    }
+    input::placeholder{color: rgba(199,210,254,.65)}
+    input:focus{border-color: rgba(79,209,255,.45)}
+
+    .two{display:grid;grid-template-columns:1fr;gap:12px;}
+    @media(min-width: 600px){.two{grid-template-columns:1fr 1fr;}}
+
+    .checkbox{
+      display:flex;gap:10px;align-items:flex-start;
+      font-size:.92rem;color:var(--muted);
+      padding:10px 12px;border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.4);
+    }
+    .checkbox input{margin-top:3px;}
+
+    .count{
+      font-size: 1.9rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* Donate */
+    .donate-grid{display:grid;gap:10px;grid-template-columns:1fr;}
+    @media(min-width: 600px){.donate-grid{grid-template-columns: repeat(3, 1fr);}}
+    .donate-btn{
+      display:flex;flex-direction:column;gap:6px;
+      text-decoration:none;color:white;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.45);
+      border-radius:16px;
+      padding:14px 14px;
+      font-weight:800;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .donate-btn:hover{transform: translateY(-2px);border-color: rgba(255,255,255,.18)}
+    .donate-btn small{color:var(--muted);font-weight:700}
+
+    footer{text-align:center;color:var(--muted2);margin-top:26px;font-size:.9rem;}
+    .tiny{color:rgba(199,210,254,.7);font-size:.85rem;line-height:1.4}
+  </style>
+</head>
+<body>
+
+<!-- Sticky top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true"></span>
+      <span>
+        <div class="name">LivePay</div>
+        <div class="tag">Own your data • Earn your value</div>
+      </span>
+    </a>
+    <nav class="nav">
+      <a class="chip" href="#goals">Policy Goals</a>
+      <a class="chip" href="#donate">Donate</a>
+      <a class="chip" href="#sign">Sign</a>
+    </nav>
+  </div>
+</div>
+
+<div id="top" class="container">
+
+  <section class="hero">
+    <div class="kicker">Petition to Congress • <b>85% revenue share</b> for data owners</div>
+    <h1>Reclaim Your Data. Reclaim Your Wealth.</h1>
+    <p>
+      Personal data powers a multi‑billion‑dollar market. LivePay is mobilizing public support for the
+      <b>Data Ownership &amp; Fair Revenue Act</b> — recognizing personal data as user‑owned digital property and
+      requiring companies to return <b>at least 85%</b> of data monetization revenue to the people who create the value.
+    </p>
+
+    <div class="row-actions">
+      <a href="#sign" class="btn">✅ Sign the Petition</a>
+      <a href="#donate" class="btn secondary">💳 Donate via Stripe</a>
+      <a href="#share" class="btn secondary">🔁 Share</a>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Why This Matters</h2>
+      <p class="muted">
+        Today, data brokers and large platforms can collect, package, and monetize personal information with limited transparency.
+        The public generates the value — but rarely shares in the revenue.
+      </p>
+      <p class="muted">
+        This petition supports a federal framework that makes data markets transparent, opt‑in, auditable, and fair — so people
+        can be paid for the economic value their data creates.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>What Your Support Unlocks</h2>
+      <ul>
+        <li>Verified signature collection (mobile + web)</li>
+        <li>Congress-ready policy brief &amp; outreach kit</li>
+        <li>Compliance-first infrastructure for transparent payouts</li>
+        <li>Momentum for hearings, sponsors, and press coverage</li>
+      </ul>
+      <p class="tiny" style="margin-top:10px">
+        Donations help fund advocacy, infrastructure, and campaign operations. Donations are not a vote; your signature is.
+      </p>
+    </section>
+  </div>
+
+  <section id="goals" class="card">
+    <h2>Policy Goals</h2>
+    <ul>
+      <li>Recognize personal data as private digital property</li>
+      <li>Mandate a minimum 85% revenue share for data owners</li>
+      <li>Require transparency and opt-in consent</li>
+      <li>License and regulate data brokers</li>
+      <li>Protect Americans from unauthorized resale</li>
+    </ul>
+  </section>
+
+  <section id="donate" class="card donation-box">
+    <h2>Fuel the LivePay Movement</h2>
+    <p>
+      Donations accelerate platform development, policy advocacy, security infrastructure, and national awareness campaigns. Help us build a future where people — not corporations — benefit from their data.
+    </p>
+
+    <!-- Replace the link below with your real Stripe Payment Link -->
+    <a href="https://buy.stripe.com/test_placeholder" target="_blank" class="btn donate-btn">
+      Donate Securely via Stripe
+    </a>
+  </section>
+
+  <section id="donate" class="card">
+    <h2>Donate (Stripe)</h2>
+    <p class="muted">
+      Want to accelerate the movement? Use Stripe to donate securely.
+      <b>Replace the placeholder links below</b> with your Stripe Payment Links (no backend required).
+    </p>
+
+    <div class="donate-grid">
+      <a class="donate-btn" id="donate25" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+        Donate $25
+        <small>Fuel outreach + signature growth</small>
+      </a>
+      <a class="donate-btn" id="donate50" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+        Donate $50
+        <small>Support policy + legal engagement</small>
+      </a>
+      <a class="donate-btn" id="donate100" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK" target="_blank" rel="noopener">
+        Donate $100
+        <small>Build infrastructure + credibility</small>
+      </a>
+    </div>
+
+    <p class="tiny" style="margin-top:12px">
+      Tip: In Stripe Dashboard → Payment Links → Create link → set amount → copy the "buy.stripe.com" URL and paste it here.
+    </p>
+  </section>
+
+  <section id="sign" class="card">
+    <h2>Sign the Petition</h2>
+    <div class="count" id="signatureCount">0 Signatures</div>
+
+    <form id="petitionForm">
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address" required>
+
+      <div class="two">
+        <input type="text" placeholder="City" required>
+        <input type="text" placeholder="State" required>
+      </div>
+
+      <div class="two">
+        <input type="text" placeholder="ZIP Code" required>
+        <select required>
+          <option value="" disabled selected>Country</option>
+          <option>United States</option>
+          <option>Canada</option>
+          <option>United Kingdom</option>
+          <option>Australia</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <label class="checkbox">
+        <input type="checkbox" required>
+        <span>I certify this is my real identity and support the <b>Data Ownership &amp; Fair Revenue Act</b>.</span>
+      </label>
+
+      <button class="btn" type="submit">Submit Signature</button>
+      <div class="tiny">
+        This prototype stores signatures locally in your browser for demonstration. For lobbying‑grade validation,
+        upgrade to database capture + email/SMS verification.
+      </div>
+    </form>
+  </section>
+
+  <section id="share" class="card">
+    <h2>Share</h2>
+    <p class="muted">Copy the link and share the petition with your community.</p>
+    <div class="two">
+      <input id="shareUrl" type="text" readonly>
+      <button class="btn secondary" id="copyBtn" type="button">Copy Link</button>
+    </div>
+    <p class="tiny" style="margin-top:10px">Pro tip: add this page to your Linktree, Discord server, and X/TikTok bio.</p>
+  </section>
+
+  <footer>
+    LivePay — Building a human-centered financial ecosystem where people benefit from the value they create.
+  </footer>
+
+</div>
+
+<script>
+  // --- Demo-only local signature counter ---
+  let signatures = Number(localStorage.getItem('signatures') || 0);
+  const signatureCountEl = document.getElementById('signatureCount');
+  signatureCountEl.innerText = signatures + " Signatures";
+
+  const form = document.getElementById('petitionForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    signatures += 1;
+    localStorage.setItem('signatures', String(signatures));
+    signatureCountEl.innerText = signatures + " Signatures";
+    alert("Thank you for signing the LivePay petition!");
+    form.reset();
+  });
+
+  // --- Share link helper ---
+  const shareUrl = document.getElementById('shareUrl');
+  shareUrl.value = window.location.href.split('#')[0];
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    try{
+      await navigator.clipboard.writeText(shareUrl.value);
+      alert('Link copied!');
+    }catch(err){
+      // fallback
+      shareUrl.select();
+      document.execCommand('copy');
+      alert('Link copied!');
+    }
+  });
+</script>
+
+</body>
+</html>
