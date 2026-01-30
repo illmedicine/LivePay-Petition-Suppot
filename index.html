@@ -443,8 +443,10 @@
 
   // --- Register Service Worker for PWA/Offline Support ---
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js').then((reg) => {
+    navigator.serviceWorker.register('service-worker.js?v=2').then((reg) => {
       console.log('✓ Service Worker registered');
+      // Force update check
+      reg.update();
     }).catch((err) => {
       console.log('Service Worker registration failed:', err);
     });
