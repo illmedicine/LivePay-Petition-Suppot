@@ -433,111 +433,31 @@
   }
 
   // --- Configuration ---
-  const API_BASE = 'http://localhost:5000/api';
+  // GitHub Pages deployment - localStorage only (no backend required)
   
-  // --- Fetch signature count from backend ---
-  async function updateSignatureCount() {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3000);
-      const response = await fetch(`${API_BASE}/petition/signatures/count`, { signal: controller.signal });
-      clearTimeout(timeoutId);
-      if (response.ok) {
-        const data = await response.json();
-        document.getElementById('signatureCount').innerText = data.count + " Signatures";
-      }
-    } catch (err) {
-      // Silently fallback to localStorage if backend unavailable
-      let signatures = Number(localStorage.getItem('signatures') || 0);
-      document.getElementById('signatureCount').innerText = signatures + " Signatures";
-    }
+  // --- Update signature count from localStorage ---
+  function updateSignatureCount() {
+    let signatures = Number(localStorage.getItem('signatures') || 0);
+    document.getElementById('signatureCount').innerText = signatures + " Signatures";
   }
 
   // Initialize on page load
   updateSignatureCount();
-  setInterval(updateSignatureCount, 30000); // Refresh every 30 seconds
 
   // --- Petition Form Submission ---
   const form = document.getElementById('petitionForm');
-  form.addEventListener('submit', async function(e) {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const formData = {
-      fullName: form.querySelector('input[placeholder="Full Name"]').value,
-      email: form.querySelector('input[placeholder="Email Address"]').value,
-      city: form.querySelector('input[placeholder="City"]').value,
-      state: form.querySelector('input[placeholder="State"]').value,
-      zip: form.querySelector('input[placeholder="ZIP Code"]').value,
-      country: form.querySelector('select').value,
-      certified: form.querySelector('input[type="checkbox"]').checked,
-    };
-
-    try {
-      // Try to submit to backend
-      const response = await fetch(`${API_BASE}/petition/sign`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert(`✅ Thank you for signing! Total signatures: ${data.totalSignatures}`);
-        form.reset();
-        updateSignatureCount();
-      } else {
-        const error = await response.json();
-        alert("⚠️ " + (error.error || "Error submitting signature"));
-      }
-    } catch (err) {
-      // Fallback to localStorage
-      let signatures = Number(localStorage.getItem('signatures') || 0);
-      signatures += 1;
-      localStorage.setItem('signatures', String(signatures));
-      alert("✅ Your signature has been recorded and saved!");
-      form.reset();
-      updateSignatureCount();
-    }
+    // Store signature in localStorage
+    let signatures = Number(localStorage.getItem('signatures') || 0);
+    signatures += 1;
+    localStorage.setItem('signatures', String(signatures));
+    
+    alert("✅ Thank you for signing! Your signature has been recorded.");
+    form.reset();
+    updateSignatureCount();
   });
-
-  // --- Donation Tracking Form ---
-  const donationForm = document.getElementById('donationTrackingForm');
-  if (donationForm) {
-    donationForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const email = document.getElementById('donorEmail').value;
-      const amount = document.getElementById('donationAmount').value;
-      const sendReceipt = document.getElementById('donationReceipt').checked;
-
-      const donationData = {
-        email: email,
-        amount: parseFloat(amount),
-        sendReceipt: sendReceipt,
-      };
-
-      try {
-        const response = await fetch(`${API_BASE}/donation/track`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(donationData),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          alert(data.message + '\n\n' + (data.donation.receiptSent 
-            ? `✅ Receipt sent to ${email}` 
-            : '💳 Thank you for your donation!'));
-          donationForm.reset();
-        } else {
-          const error = await response.json();
-          alert("Error: " + error.error);
-        }
-      } catch (err) {
-        alert("❌ Backend not running.\n\nTo track donations and send receipts, start the server:\nnpm start");
-      }
-    });
-  }
 
   // --- Share link helper ---
   const shareUrl = document.getElementById('shareUrl');
