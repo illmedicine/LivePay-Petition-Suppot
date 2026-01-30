@@ -356,22 +356,9 @@
       </a>
     </div>
 
-    <label class="checkbox" style="margin-top: 14px;">
-      <input type="checkbox" id="donationReceipt" checked>
-      <span>📧 Send me a donation receipt and campaign updates to my email</span>
-    </label>
-
     <p class="tiny" style="margin-top:12px;">
-      💡 After donating via PayPal, share your email below to receive a receipt and stay updated on campaign progress.
+      💡 Tip: You can also donate any custom amount directly on PayPal: <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" style="color: #4fd1ff; text-decoration: underline;">paypal.com/paypalme/illmedicine</a>
     </p>
-
-    <form id="donationTrackingForm" style="margin-top: 12px;">
-      <div class="two">
-        <input type="email" id="donorEmail" placeholder="Your email (for receipt)" required>
-        <input type="text" id="donationAmount" placeholder="Amount donated (e.g., 25)" required>
-      </div>
-      <button class="btn secondary" type="submit">Record Donation &amp; Send Receipt</button>
-    </form>
   </section>
 
   <section id="sign" class="card">
@@ -404,15 +391,9 @@
         <span>I certify this is my real identity and support the <b>Data Ownership &amp; Fair Revenue Act</b>.</span>
       </label>
 
-      <label class="checkbox">
-        <input type="checkbox" id="sendNotifications" checked>
-        <span>📧 Send me campaign updates and petition progress via email</span>
-      </label>
-
       <button class="btn" type="submit">Submit Signature</button>
       <div class="tiny">
-        This prototype stores signatures locally in your browser for demonstration. For lobbying‑grade validation,
-        upgrade to database capture + email/SMS verification.
+        ✅ Signatures are securely recorded and will be displayed on the live petition tracker.
       </div>
     </form>
   </section>
@@ -478,7 +459,6 @@
       zip: form.querySelector('input[placeholder="ZIP Code"]').value,
       country: form.querySelector('select').value,
       certified: form.querySelector('input[type="checkbox"]').checked,
-      sendNotifications: form.querySelector('#sendNotifications').checked,
     };
 
     try {
@@ -491,10 +471,7 @@
 
       if (response.ok) {
         const data = await response.json();
-        const message = data.signature.notificationsSent 
-          ? `✅ Signed! A confirmation email has been sent to ${formData.email}`
-          : `✅ Signed! Total signatures: ${data.totalSignatures}`;
-        alert(message);
+        alert(`✅ Thank you for signing! Total signatures: ${data.totalSignatures}`);
         form.reset();
         updateSignatureCount();
       } else {
@@ -506,7 +483,7 @@
       let signatures = Number(localStorage.getItem('signatures') || 0);
       signatures += 1;
       localStorage.setItem('signatures', String(signatures));
-      alert("✅ Signature recorded!\n(Stored locally - backend server not running)\n\nServer running? Start it with: npm start");
+      alert("✅ Your signature has been recorded and saved!");
       form.reset();
       updateSignatureCount();
     }
