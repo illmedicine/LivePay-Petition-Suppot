@@ -12,6 +12,9 @@
   <meta name="apple-mobile-web-app-title" content="LivePay">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
   <style>
     :root{
       --bg:#0b0f1a;
@@ -423,6 +426,21 @@
 </div>
 
 <script>
+  // --- Firebase Configuration ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyAPDuRborL8nacI7j6aFGDUFopn_C9kN_A",
+    authDomain: "livepay-petition.firebaseapp.com",
+    projectId: "livepay-petition",
+    storageBucket: "livepay-petition.firebasestorage.app",
+    messagingSenderId: "962896076422",
+    appId: "1:962896076422:web:35db5ad1acba6501d3fb07",
+    measurementId: "G-8JYF50F7R8"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
   // --- Register Service Worker for PWA/Offline Support ---
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js').then((reg) => {
@@ -432,13 +450,20 @@
     });
   }
 
-  // --- Configuration ---
-  // GitHub Pages deployment - localStorage only (no backend required)
-  
-  // --- Update signature count from localStorage ---
+  // --- Real-time signature count from Firebase ---
   function updateSignatureCount() {
-    let signatures = Number(localStorage.getItem('signatures') || 0);
-    document.getElementById('signatureCount').innerText = signatures + " Signatures";
+    db.collection('petitions').doc('livepay').onSnapshot((doc) => {
+      if (doc.exists) {
+        const count = doc.data().signatures || 0;
+        document.getElementById('signatureCount').innerText = count + " Signatures";
+      } else {
+        document.getElementById('signatureCount').innerText = "0 Signatures";
+      }
+    }, (error) => {
+      // Fallback: show 0 if Firebase unavailable
+      console.log('Firebase unavailable, using fallback');
+      document.getElementById('signatureCount').innerText = "0 Signatures";
+    });
   }
 
   // Initialize on page load
@@ -446,17 +471,41 @@
 
   // --- Petition Form Submission ---
   const form = document.getElementById('petitionForm');
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Store signature in localStorage
-    let signatures = Number(localStorage.getItem('signatures') || 0);
-    signatures += 1;
-    localStorage.setItem('signatures', String(signatures));
-    
-    alert("✅ Thank you for signing! Your signature has been recorded.");
-    form.reset();
-    updateSignatureCount();
+    // Get form data
+    const fullName = form.querySelector('input[placeholder="Full Name"]').value;
+    const email = form.querySelector('input[placeholder="Email Address"]').value;
+    const city = form.querySelector('input[placeholder="City"]').value;
+    const state = form.querySelector('input[placeholder="State"]').value;
+    const zip = form.querySelector('input[placeholder="ZIP Code"]').value;
+    const country = form.querySelector('select').value;
+
+    try {
+      // Add signature to Firebase
+      await db.collection('petitions').doc('livepay').update({
+        signatures: firebase.firestore.FieldValue.increment(1),
+        lastSignedAt: new Date(),
+      });
+
+      // Also store individual signature for record-keeping
+      await db.collection('signatures').add({
+        fullName: fullName,
+        email: email,
+        city: city,
+        state: state,
+        zip: zip,
+        country: country,
+        signedAt: new Date(),
+      });
+
+      alert("✅ Thank you for signing! Your signature has been recorded.");
+      form.reset();
+    } catch (error) {
+      console.error("Error submitting signature:", error);
+      alert("❌ Error submitting signature. Please try again.");
+    }
   });
 
   // --- Share link helper ---
