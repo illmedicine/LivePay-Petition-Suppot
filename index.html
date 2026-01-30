@@ -438,8 +438,13 @@
   };
 
   // Initialize Firebase - make db global for console access
-  firebase.initializeApp(firebaseConfig);
-  window.db = firebase.firestore();
+  try {
+    firebase.initializeApp(firebaseConfig);
+    window.db = firebase.firestore();
+    console.log('✓ Firebase initialized successfully');
+  } catch (error) {
+    console.error('❌ Firebase initialization failed:', error);
+  }
 
   // --- Register Service Worker for PWA/Offline Support ---
   if ('serviceWorker' in navigator) {
@@ -485,6 +490,11 @@
     const country = form.querySelector('select').value;
 
     try {
+      // Wait for Firebase to be ready
+      if (!window.db) {
+        throw new Error('Firebase not initialized');
+      }
+
       // Add signature to Firebase
       await window.db.collection('petitions').doc('livepay').update({
         signatures: firebase.firestore.FieldValue.increment(1),
@@ -502,11 +512,12 @@
         signedAt: new Date(),
       });
 
+      console.log('✅ Signature saved to Firebase');
       alert("✅ Thank you for signing! Your signature has been recorded.");
       form.reset();
     } catch (error) {
       console.error("Error submitting signature:", error);
-      alert("❌ Error submitting signature. Please try again.");
+      alert("❌ Error: " + error.message + ". Please refresh and try again.");
     }
   });
 
