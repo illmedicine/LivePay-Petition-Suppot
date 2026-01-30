@@ -188,29 +188,36 @@
     @media(min-width: 600px){.two{grid-template-columns:1fr 1fr;}}
 
     .checkbox{
-      display:flex;gap:10px;align-items:flex-start;
+      display:flex;gap:12px;align-items:center;
       font-size:.92rem;color:var(--muted);
-      padding:10px 12px;border-radius:14px;
+      padding:12px 14px;border-radius:14px;
       border:1px solid var(--border);
       background: rgba(11,15,26,.4);
       cursor: pointer;
       min-height: 44px;
-      align-items: center;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
     .checkbox input{
       margin: 0;
       width: 20px;
       height: 20px;
       min-width: 20px;
+      flex-shrink: 0;
       cursor: pointer;
       accent-color: #4fd1ff;
+      appearance: auto;
+    }
+    .checkbox input:focus{
+      outline: 2px solid #4fd1ff;
+      outline-offset: 2px;
     }
 
     @media(max-width: 600px){
-      .checkbox{
-        padding: 12px 14px;
-        min-height: 50px;
+      input, select{
+        padding: 15px 14px;
+        font-size: 16px;
+        min-height: 44px;
       }
       .checkbox input{
         width: 24px;
