@@ -6,6 +6,7 @@
   <title>LivePay Petition — Data Ownership & Fair Revenue Act</title>
   <meta name="description" content="Sign the LivePay petition to support the Data Ownership & Fair Revenue Act and require an 85% revenue share for data owners. Donate to accelerate the campaign." />
   <meta name="theme-color" content="#4fd1ff">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LivePay">
@@ -430,13 +431,16 @@
   // --- Fetch signature count from backend ---
   async function updateSignatureCount() {
     try {
-      const response = await fetch(`${API_BASE}/petition/signatures/count`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      const response = await fetch(`${API_BASE}/petition/signatures/count`, { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (response.ok) {
         const data = await response.json();
         document.getElementById('signatureCount').innerText = data.count + " Signatures";
       }
     } catch (err) {
-      // Fallback to localStorage if backend unavailable
+      // Silently fallback to localStorage if backend unavailable
       let signatures = Number(localStorage.getItem('signatures') || 0);
       document.getElementById('signatureCount').innerText = signatures + " Signatures";
     }
@@ -444,7 +448,7 @@
 
   // Initialize on page load
   updateSignatureCount();
-  setInterval(updateSignatureCount, 5000); // Refresh every 5 seconds
+  setInterval(updateSignatureCount, 30000); // Refresh every 30 seconds
 
   // --- Petition Form Submission ---
   const form = document.getElementById('petitionForm');
@@ -548,19 +552,7 @@
     });
   }
 
-  // --- Mobile App Install Prompt ---
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // Show install button if needed
-    console.log('📱 App can be installed');
-  });
-
-  // Detect if app is in standalone mode (PWA installed)
-  if (window.navigator.standalone === true) {
-    console.log('📱 Running as installed PWA app');
-  }
+  // PWA already configured via manifest.json - no additional install prompt needed
 </script>
 
 </body>
