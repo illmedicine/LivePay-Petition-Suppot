@@ -448,12 +448,19 @@
 
   // --- Register Service Worker for PWA/Offline Support ---
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js?v=2').then((reg) => {
-      console.log('✓ Service Worker registered');
-      // Force update check
-      reg.update();
-    }).catch((err) => {
-      console.log('Service Worker registration failed:', err);
+    // Unregister old service workers to clear cache
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((reg) => {
+        reg.unregister();
+      });
+    }).then(() => {
+      // Register fresh service worker
+      navigator.serviceWorker.register('service-worker.js?v=3').then((reg) => {
+        console.log('✓ Service Worker registered (fresh)');
+        reg.update();
+      }).catch((err) => {
+        console.log('Service Worker registration failed:', err);
+      });
     });
   }
 
