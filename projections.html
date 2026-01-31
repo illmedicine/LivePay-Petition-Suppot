@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Fair Data Act Projections — LivePay</title>
+  <meta name="description" content="U.S.-scale simulation of Fair Data Act payouts using the LivePay Fair-Trade split: 80% to people, 15% to infrastructure, 5% to treasury." />
+  <meta name="theme-color" content="#4fd1ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LivePay">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --panel:#12182b;
+      --panel2:#0f1526;
+      --text:#ffffff;
+      --muted:#c7d2fe;
+      --muted2:#8b9cff;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 20px 40px rgba(0,0,0,.4);
+      --grad:linear-gradient(90deg,#4fd1ff,#7c5cff);
+    }
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.25), transparent 60%),
+                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.18), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .container{max-width:1200px;margin:auto;padding:26px 18px 60px;}
+
+    /* Top bar */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(11,15,26,.65);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1200px;margin:auto;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 18px;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .mark{
+      width:34px;height:34px;border-radius:10px;
+      background: var(--grad);
+      box-shadow: 0 10px 25px rgba(79,209,255,.18);
+      position:relative;
+    }
+    .mark:after{
+      content:"";
+      position:absolute;inset:9px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.65);
+      opacity:.55;
+    }
+    .brand .name{font-weight:800;letter-spacing:.2px;}
+    .brand .tag{font-size:.85rem;color:var(--muted2)}
+
+    .nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(18,24,43,.6);
+      color: var(--muted);
+      padding:10px 12px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:.9rem;
+    }
+    .chip:hover{border-color: rgba(255,255,255,.18)}
+    .chip.active{
+      background: var(--grad);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Hero */
+    .hero{text-align:center;margin:34px 0 34px;}
+    .kicker{
+      display:inline-flex;gap:10px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(18,24,43,.6);
+      color:var(--muted);
+      font-size:.9rem;
+      margin-bottom:16px;
+    }
+    .kicker b{color:#fff}
+
+    .hero h1{
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0 0 12px;
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1.05;
+      letter-spacing:-.5px;
+    }
+    .hero p{font-size:1.05rem;color:var(--muted);max-width:860px;margin:0 auto 18px;line-height:1.6;}
+
+    /* Cards */
+    .card{
+      background: linear-gradient(180deg, rgba(18,24,43,.95), rgba(15,21,38,.95));
+      padding: 24px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      border:1px solid var(--border);
+      margin-bottom:20px;
+    }
+
+    h2{margin:0 0 16px;font-size:1.5rem;color:#fff;}
+    h3{margin:22px 0 12px;font-size:1.2rem;color:var(--muted2);}
+    .muted{color:var(--muted)}
+
+    /* Split boxes */
+    .split-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+      gap:14px;
+      margin:20px 0;
+    }
+    .split-box{
+      background: rgba(11,15,26,.6);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      text-align:center;
+    }
+    .split-box .label{
+      font-size:.9rem;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .split-box .value{
+      font-size:2rem;
+      font-weight:900;
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .split-box .desc{
+      font-size:.85rem;
+      color:var(--muted2);
+      margin-top:6px;
+    }
+
+    /* Math explanation box */
+    .math-box{
+      background: rgba(79,209,255,.08);
+      border:1px solid rgba(79,209,255,.2);
+      border-radius:14px;
+      padding:18px;
+      margin:16px 0;
+      font-family: 'Courier New', monospace;
+      font-size:.95rem;
+      line-height:1.8;
+    }
+
+    /* Tables */
+    .table-wrapper{
+      overflow-x:auto;
+      margin:20px 0;
+      border-radius:14px;
+      border:1px solid var(--border);
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.92rem;
+    }
+    thead{
+      background: rgba(79,209,255,.12);
+    }
+    th{
+      padding:14px 12px;
+      text-align:left;
+      font-weight:700;
+      color:#fff;
+      border-bottom:1px solid var(--border);
+      white-space:nowrap;
+    }
+    td{
+      padding:12px;
+      color:var(--muted);
+      border-bottom:1px solid var(--border);
+    }
+    tbody tr:hover{
+      background: rgba(79,209,255,.05);
+    }
+    tbody tr:last-child td{
+      border-bottom:none;
+    }
+    .num{
+      font-weight:700;
+      color:#fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Scenario headers */
+    .scenario-header{
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-size:1.35rem;
+      font-weight:800;
+      margin:32px 0 8px;
+    }
+    .scenario-desc{
+      color:var(--muted2);
+      font-size:.95rem;
+      margin-bottom:16px;
+    }
+
+    /* Note boxes */
+    .note{
+      background: rgba(124,92,255,.08);
+      border:1px solid rgba(124,92,255,.2);
+      border-radius:14px;
+      padding:16px;
+      margin:16px 0;
+      font-size:.92rem;
+      line-height:1.6;
+    }
+    .note strong{
+      color:var(--muted2);
+    }
+
+    footer{text-align:center;color:var(--muted2);margin-top:40px;font-size:.9rem;padding-bottom:20px;}
+
+    @media(max-width:768px){
+      .hero h1{font-size:1.8rem;}
+      table{font-size:.85rem;}
+      th, td{padding:10px 8px;}
+      .split-box .value{font-size:1.6rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sticky top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"></span>
+      <span>
+        <div class="name">LivePay</div>
+        <div class="tag">Own your data • Earn your value</div>
+      </span>
+    </a>
+    <nav class="nav">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip active" href="projections.html">Projections</a>
+      <a class="chip" href="movie.html">Movie</a>
+      <a class="chip" href="index.html#goals">Policy Goals</a>
+      <a class="chip" href="index.html#donate">Donate</a>
+      <a class="chip" href="index.html#sign">Sign</a>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+
+  <section class="hero">
+    <div class="kicker">U.S.-Scale Economic Analysis • <b>341.8M Population</b></div>
+    <h1>Fair Data Act Projections</h1>
+    <p>
+      Below is a comprehensive simulation of payouts using the <strong>LivePay Fair-Trade split</strong> across the U.S. population. 
+      This model demonstrates what happens when we recognize personal data as property and ensure fair compensation reaches the people who create the value.
+    </p>
+  </section>
+
+  <!-- The Split Breakdown -->
+  <div class="card">
+    <h2>The LivePay Fair-Trade Split</h2>
+    <p class="muted">Every dollar paid by data buyers is distributed according to this transparent structure:</p>
+    
+    <div class="split-grid">
+      <div class="split-box">
+        <div class="label">Data Owners</div>
+        <div class="value">80%</div>
+        <div class="desc">People who create the value</div>
+      </div>
+      <div class="split-box">
+        <div class="label">Infrastructure</div>
+        <div class="value">15%</div>
+        <div class="desc">Centralized mesh broker operations</div>
+      </div>
+      <div class="split-box">
+        <div class="label">Treasury / Governance</div>
+        <div class="value">5%</div>
+        <div class="desc">Fair Trade Committee & oversight</div>
+      </div>
+    </div>
+
+    <h3>How the Math Works (Transparency First)</h3>
+    <p class="muted">Let <strong>P</strong> = annual payout per participating person (the 80% share).</p>
+    
+    <div class="math-box">
+      Total paid by buyers (100%) = P / 0.80 = 1.25P<br>
+      Infrastructure (15% of total) = 0.15 × 1.25P = 0.1875P<br>
+      Treasury (5% of total) = 0.05 × 1.25P = 0.0625P
+    </div>
+
+    <p class="muted" style="margin-top:16px;">Example breakdown per person:</p>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>User Payout (P)</th>
+            <th>Total Buyer Spend</th>
+            <th>Infrastructure Fee</th>
+            <th>Treasury Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">$1,200</td>
+            <td class="num">$1,500</td>
+            <td class="num">$225</td>
+            <td class="num">$75</td>
+          </tr>
+          <tr>
+            <td class="num">$2,500</td>
+            <td class="num">$3,125</td>
+            <td class="num">$468.75</td>
+            <td class="num">$156.25</td>
+          </tr>
+          <tr>
+            <td class="num">$3,500</td>
+            <td class="num">$4,375</td>
+            <td class="num">$656.25</td>
+            <td class="num">$218.75</td>
+          </tr>
+          <tr>
+            <td class="num">$5,000</td>
+            <td class="num">$6,250</td>
+            <td class="num">$937.50</td>
+            <td class="num">$312.50</td>
+          </tr>
+          <tr>
+            <td class="num">$8,500</td>
+            <td class="num">$10,625</td>
+            <td class="num">$1,593.75</td>
+            <td class="num">$531.25</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Population Baseline -->
+  <div class="card">
+    <h2>Population Baseline</h2>
+    <p class="muted">
+      Using the <strong>U.S. Census Bureau Vintage 2025 estimate</strong> as the closest official baseline to today:
+    </p>
+    <div class="split-grid" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));">
+      <div class="split-box">
+        <div class="label">U.S. Population</div>
+        <div class="value" style="font-size:1.8rem;">341.8M</div>
+        <div class="desc">July 1, 2025 (Census Bureau)</div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:.9rem;margin-top:12px;">
+      To model adoption, we show <strong>25% / 50% / 75% / 100%</strong> participation rates across all scenarios.
+    </p>
+  </div>
+
+  <!-- Scenario A: Conservative -->
+  <div class="card">
+    <div class="scenario-header">Scenario A — Conservative</div>
+    <div class="scenario-desc">$1,200/year per participant</div>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Participation</th>
+            <th>People Paid</th>
+            <th>User Payouts (80%)</th>
+            <th>Infrastructure (15%)</th>
+            <th>Treasury (5%)</th>
+            <th>Total Paid by Buyers (100%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">25%</td>
+            <td class="num">85.5M</td>
+            <td class="num">$102.5B</td>
+            <td class="num">$19.2B</td>
+            <td class="num">$6.4B</td>
+            <td class="num">$128.2B</td>
+          </tr>
+          <tr>
+            <td class="num">50%</td>
+            <td class="num">170.9M</td>
+            <td class="num">$205.1B</td>
+            <td class="num">$38.5B</td>
+            <td class="num">$12.8B</td>
+            <td class="num">$256.4B</td>
+          </tr>
+          <tr>
+            <td class="num">75%</td>
+            <td class="num">256.4M</td>
+            <td class="num">$307.6B</td>
+            <td class="num">$57.7B</td>
+            <td class="num">$19.2B</td>
+            <td class="num">$384.5B</td>
+          </tr>
+          <tr>
+            <td class="num">100%</td>
+            <td class="num">341.8M</td>
+            <td class="num">$410.2B</td>
+            <td class="num">$76.9B</td>
+            <td class="num">$25.6B</td>
+            <td class="num">$512.7B</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Scenario B: Moderate -->
+  <div class="card">
+    <div class="scenario-header">Scenario B — Moderate</div>
+    <div class="scenario-desc">$2,500 to $3,500/year per participant</div>
+    
+    <h3>At P = $2,500</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Participation</th>
+            <th>User Payouts (80%)</th>
+            <th>Infrastructure</th>
+            <th>Treasury</th>
+            <th>Total Paid by Buyers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">25%</td>
+            <td class="num">$213.6B</td>
+            <td class="num">$40.1B</td>
+            <td class="num">$13.4B</td>
+            <td class="num">$267.0B</td>
+          </tr>
+          <tr>
+            <td class="num">50%</td>
+            <td class="num">$427.3B</td>
+            <td class="num">$80.1B</td>
+            <td class="num">$26.7B</td>
+            <td class="num">$534.1B</td>
+          </tr>
+          <tr>
+            <td class="num">75%</td>
+            <td class="num">$640.9B</td>
+            <td class="num">$120.2B</td>
+            <td class="num">$40.1B</td>
+            <td class="num">$801.1B</td>
+          </tr>
+          <tr>
+            <td class="num">100%</td>
+            <td class="num">$854.5B</td>
+            <td class="num">$160.2B</td>
+            <td class="num">$53.4B</td>
+            <td class="num">$1.07T</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>At P = $3,500</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Participation</th>
+            <th>User Payouts (80%)</th>
+            <th>Infrastructure</th>
+            <th>Treasury</th>
+            <th>Total Paid by Buyers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">25%</td>
+            <td class="num">$299.1B</td>
+            <td class="num">$56.1B</td>
+            <td class="num">$18.7B</td>
+            <td class="num">$373.8B</td>
+          </tr>
+          <tr>
+            <td class="num">50%</td>
+            <td class="num">$598.2B</td>
+            <td class="num">$112.2B</td>
+            <td class="num">$37.4B</td>
+            <td class="num">$747.7B</td>
+          </tr>
+          <tr>
+            <td class="num">75%</td>
+            <td class="num">$897.2B</td>
+            <td class="num">$168.2B</td>
+            <td class="num">$56.1B</td>
+            <td class="num">$1.12T</td>
+          </tr>
+          <tr>
+            <td class="num">100%</td>
+            <td class="num">$1.20T</td>
+            <td class="num">$224.3B</td>
+            <td class="num">$74.8B</td>
+            <td class="num">$1.50T</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Scenario C: Full Fair AI Economy -->
+  <div class="card">
+    <div class="scenario-header">Scenario C — Full "Fair AI Economy"</div>
+    <div class="scenario-desc">$5,000 to $8,500/year per participant</div>
+    
+    <h3>At P = $5,000</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Participation</th>
+            <th>User Payouts (80%)</th>
+            <th>Infrastructure</th>
+            <th>Treasury</th>
+            <th>Total Paid by Buyers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">25%</td>
+            <td class="num">$427.3B</td>
+            <td class="num">$80.1B</td>
+            <td class="num">$26.7B</td>
+            <td class="num">$534.1B</td>
+          </tr>
+          <tr>
+            <td class="num">50%</td>
+            <td class="num">$854.5B</td>
+            <td class="num">$160.2B</td>
+            <td class="num">$53.4B</td>
+            <td class="num">$1.07T</td>
+          </tr>
+          <tr>
+            <td class="num">75%</td>
+            <td class="num">$1.28T</td>
+            <td class="num">$240.3B</td>
+            <td class="num">$80.1B</td>
+            <td class="num">$1.60T</td>
+          </tr>
+          <tr>
+            <td class="num">100%</td>
+            <td class="num">$1.71T</td>
+            <td class="num">$320.4B</td>
+            <td class="num">$106.8B</td>
+            <td class="num">$2.14T</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>At P = $8,500</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Participation</th>
+            <th>User Payouts (80%)</th>
+            <th>Infrastructure</th>
+            <th>Treasury</th>
+            <th>Total Paid by Buyers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num">25%</td>
+            <td class="num">$726.3B</td>
+            <td class="num">$136.2B</td>
+            <td class="num">$45.4B</td>
+            <td class="num">$907.8B</td>
+          </tr>
+          <tr>
+            <td class="num">50%</td>
+            <td class="num">$1.45T</td>
+            <td class="num">$272.5B</td>
+            <td class="num">$90.8B</td>
+            <td class="num">$1.82T</td>
+          </tr>
+          <tr>
+            <td class="num">75%</td>
+            <td class="num">$2.18T</td>
+            <td class="num">$408.7B</td>
+            <td class="num">$136.2B</td>
+            <td class="num">$2.72T</td>
+          </tr>
+          <tr>
+            <td class="num">100%</td>
+            <td class="num">$2.91T</td>
+            <td class="num">$545.0B</td>
+            <td class="num">$181.7B</td>
+            <td class="num">$3.63T</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- What This Means -->
+  <div class="card">
+    <h2>What This Means for LivePay</h2>
+    <p class="muted">
+      Your split produces three predictable national "budgets" that scale with adoption and payout levels:
+    </p>
+    
+    <div class="note">
+      <strong>1. People's Dividend Stream (80%)</strong><br>
+      The big one that drives legitimacy and virality. At full participation with moderate payouts ($3,500/year), this puts <strong>$1.20 trillion</strong> directly into the hands of Americans annually—money they earned by creating the data that powers the AI economy.
+    </div>
+
+    <div class="note">
+      <strong>2. Infrastructure Budget (15%)</strong><br>
+      Funds the "centralized mesh broker" rails: audits, compliance, attribution, secure payouts, and the technical backbone that makes fair data markets possible. At scale, this generates <strong>$224.3 billion</strong> annually to maintain world-class infrastructure.
+    </div>
+
+    <div class="note">
+      <strong>3. Governance Budget (5%)</strong><br>
+      Funds enforcement, dispute resolution, standards development, and anti-corruption controls through the Fair Trade Committee. Even at moderate scale, this creates a <strong>$74.8 billion</strong> annual fund for protecting the system's integrity.
+    </div>
+  </div>
+
+  <!-- Sensitivity Note -->
+  <div class="card">
+    <h2>Sensitivity Note: Population Baseline</h2>
+    <p class="muted">
+      These projections use the <strong>U.S. Census Bureau Vintage 2025 estimate of 341.8 million</strong> (July 1, 2025) as the most authoritative baseline available.
+    </p>
+    
+    <div class="split-grid" style="grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));">
+      <div class="split-box">
+        <div class="label">Census Bureau (2025)</div>
+        <div class="value" style="font-size:1.6rem;">341.8M</div>
+        <div class="desc">Official baseline</div>
+      </div>
+      <div class="split-box">
+        <div class="label">CBO Projection (2026)</div>
+        <div class="value" style="font-size:1.6rem;">~349M</div>
+        <div class="desc">+2.1% variance</div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:16px;font-size:.92rem;">
+      If you substitute 341.8M → 349M, all totals rise by approximately <strong>2.1%</strong> across the board. 
+      The fundamental economics and revenue distribution remain proportional.
+    </p>
+  </div>
+
+  <footer>
+    <strong>LivePay</strong> — Building a human-centered financial ecosystem where people benefit from the value they create.<br>
+    <a href="index.html" style="color:#4fd1ff;text-decoration:none;margin-top:8px;display:inline-block;">← Back to Main Petition</a>
+  </footer>
+
+</div>
+
+</body>
+</html>

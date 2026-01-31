@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>The Reclamation — The LivePay Movie</title>
+  <meta name="description" content="The Reclamation: An alternate reality science-fiction mini-series exploring a future where AI strengthens human dignity." />
+  <meta name="theme-color" content="#4fd1ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LivePay">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --panel:#12182b;
+      --panel2:#0f1526;
+      --text:#ffffff;
+      --muted:#c7d2fe;
+      --muted2:#8b9cff;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 20px 40px rgba(0,0,0,.4);
+      --grad:linear-gradient(90deg,#4fd1ff,#7c5cff);
+      --gold:linear-gradient(135deg,#ffd700,#ffed4e,#ffd700);
+    }
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.15), transparent 60%),
+                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.12), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .container{max-width:1100px;margin:auto;padding:26px 18px 60px;}
+
+    /* Top bar */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(11,15,26,.75);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      max-width:1100px;margin:auto;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 18px;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .mark{
+      width:34px;height:34px;border-radius:10px;
+      background: var(--grad);
+      box-shadow: 0 10px 25px rgba(79,209,255,.18);
+      position:relative;
+    }
+    .mark:after{
+      content:"";
+      position:absolute;inset:9px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.65);
+      opacity:.55;
+    }
+    .brand .name{font-weight:800;letter-spacing:.2px;}
+    .brand .tag{font-size:.85rem;color:var(--muted2)}
+
+    .nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(18,24,43,.6);
+      color: var(--muted);
+      padding:10px 12px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:.9rem;
+    }
+    .chip:hover{border-color: rgba(255,255,255,.18)}
+    .chip.active{
+      background: var(--grad);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Movie Hero */
+    .movie-hero{
+      text-align:center;
+      margin:40px 0 40px;
+      padding:30px 20px;
+      background: radial-gradient(800px 400px at 50% 50%, rgba(255,215,0,.08), transparent 70%);
+      border-radius:20px;
+    }
+
+    .premiere-badge{
+      display:inline-block;
+      padding:10px 20px;
+      border-radius:999px;
+      background: var(--gold);
+      color:#000;
+      font-weight:900;
+      font-size:.9rem;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      box-shadow: 0 10px 30px rgba(255,215,0,.3);
+    }
+
+    .movie-title{
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      margin: 0 0 16px;
+      font-weight:900;
+      letter-spacing:-1px;
+      line-height:1;
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow: 0 0 40px rgba(255,255,255,.2);
+    }
+
+    .movie-subtitle{
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      color:var(--muted2);
+      font-weight:600;
+      margin-bottom:12px;
+      letter-spacing:.5px;
+    }
+
+    .movie-tagline{
+      font-size:1.05rem;
+      color:var(--muted);
+      max-width:700px;
+      margin:0 auto 30px;
+      line-height:1.6;
+      font-style:italic;
+    }
+
+    /* Video Container */
+    .video-container{
+      max-width:800px;
+      margin:0 auto 40px;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 0 0 1px var(--border);
+      background:#000;
+    }
+    .video-wrapper{
+      position:relative;
+      padding-bottom:177.78%; /* 9:16 aspect ratio for YouTube Shorts */
+      height:0;
+      overflow:hidden;
+    }
+    .video-wrapper iframe{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      border:none;
+    }
+
+    /* Section styling */
+    .section{
+      background: linear-gradient(180deg, rgba(18,24,43,.95), rgba(15,21,38,.95));
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      border:1px solid var(--border);
+      margin-bottom:24px;
+    }
+
+    .section-header{
+      font-size:1.8rem;
+      font-weight:900;
+      margin:0 0 20px;
+      text-align:center;
+      letter-spacing:-.5px;
+      text-transform:uppercase;
+      color:#fff;
+    }
+
+    .section-subheader{
+      font-size:1.3rem;
+      font-weight:700;
+      color:var(--muted2);
+      margin:28px 0 16px;
+    }
+
+    .content-block{
+      background: rgba(11,15,26,.5);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      margin:20px 0;
+      line-height:1.8;
+      color:var(--muted);
+    }
+
+    .content-block p{
+      margin:0 0 16px;
+    }
+    .content-block p:last-child{
+      margin:0;
+    }
+
+    .content-block strong{
+      color:#fff;
+      font-weight:700;
+    }
+
+    .bullet-list{
+      list-style:none;
+      padding:0;
+      margin:20px 0;
+    }
+    .bullet-list li{
+      padding:12px 0 12px 32px;
+      position:relative;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .bullet-list li:before{
+      content:"▹";
+      position:absolute;
+      left:0;
+      color:#4fd1ff;
+      font-size:1.4rem;
+      font-weight:900;
+    }
+
+    .emphasis-box{
+      background: linear-gradient(135deg, rgba(79,209,255,.12), rgba(124,92,255,.12));
+      border:2px solid rgba(79,209,255,.3);
+      border-radius:16px;
+      padding:24px;
+      margin:24px 0;
+      text-align:center;
+    }
+    .emphasis-box .quote{
+      font-size:1.3rem;
+      font-weight:700;
+      line-height:1.5;
+      color:#fff;
+      font-style:italic;
+      margin:0;
+    }
+
+    .disclaimer-box{
+      background: rgba(255,215,0,.05);
+      border:1px solid rgba(255,215,0,.2);
+      border-radius:16px;
+      padding:20px;
+      margin:20px 0;
+      font-size:.95rem;
+      line-height:1.7;
+      color:var(--muted);
+    }
+    .disclaimer-box strong{
+      color:#ffd700;
+      font-size:1.05rem;
+      display:block;
+      margin-bottom:12px;
+    }
+
+    footer{
+      text-align:center;
+      color:var(--muted2);
+      margin-top:50px;
+      font-size:.9rem;
+      padding-bottom:20px;
+      border-top:1px solid var(--border);
+      padding-top:30px;
+    }
+
+    @media(max-width:768px){
+      .movie-title{font-size:2.2rem;}
+      .section{padding:24px 20px;}
+      .video-wrapper{
+        padding-bottom:177.78%; /* Keep 9:16 for Shorts on mobile */
+      }
+    }
+
+    @media(min-width:769px){
+      .video-wrapper{
+        padding-bottom:56.25%; /* 16:9 aspect ratio for desktop */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sticky top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"></span>
+      <span>
+        <div class="name">LivePay</div>
+        <div class="tag">Own your data • Earn your value</div>
+      </span>
+    </a>
+    <nav class="nav">
+      <a class="chip" href="index.html">Home</a>
+      <a class="chip" href="projections.html">Projections</a>
+      <a class="chip active" href="movie.html">Movie</a>
+      <a class="chip" href="index.html#goals">Policy Goals</a>
+      <a class="chip" href="index.html#donate">Donate</a>
+      <a class="chip" href="index.html#sign">Sign</a>
+    </nav>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Hero Section -->
+  <section class="movie-hero">
+    <div class="premiere-badge">✦ Now Streaming ✦</div>
+    <h1 class="movie-title">THE RECLAMATION</h1>
+    <div class="movie-subtitle">An Alternate Reality Science-Fiction Mini-Series</div>
+    <p class="movie-tagline">
+      What if humanity acted early to ensure that the rise of artificial intelligence strengthened human dignity rather than replaced it?
+    </p>
+  </section>
+
+  <!-- Video Player -->
+  <div class="video-container">
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/8k7pZTxxV3A?autoplay=1&mute=1&loop=1&playlist=8k7pZTxxV3A" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        title="The Reclamation - Official Trailer">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Official Disclaimer -->
+  <section class="section">
+    <h2 class="section-header">Official Disclaimer</h2>
+    
+    <div class="disclaimer-box">
+      <strong>NOTICE: SPECULATIVE FICTION</strong>
+      <em>The Reclamation</em> is a work of speculative science fiction set in an alternate future reality.
+    </div>
+
+    <div class="content-block">
+      <p>
+        The events, institutions, technologies, legislation, and outcomes depicted — including but not limited to <strong>LivePay</strong>, the <strong>Fair Data Ethics Act</strong>, and related systems of data ownership and compensation — <strong>do not currently exist in the real world as portrayed</strong>.
+      </p>
+      <p>
+        This series is not a documentary, prediction, or representation of current law, nor does it claim that the future shown is inevitable or guaranteed.
+      </p>
+      <p>
+        Instead, <em>The Reclamation</em> presents a <strong>"what if"</strong> scenario:
+      </p>
+    </div>
+
+    <div class="emphasis-box">
+      <p class="quote">
+        "What if humanity acted early to ensure that the rise of artificial intelligence strengthened human dignity rather than replaced it?"
+      </p>
+    </div>
+
+    <div class="content-block">
+      <p>
+        Any resemblance to real companies, technologies, or policies is used solely for narrative and thematic exploration. The story is intended to provoke thought, dialogue, and imagination — <strong>not to assert factual claims about existing systems</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission Statement -->
+  <section class="section">
+    <h2 class="section-header">Mission Statement</h2>
+    
+    <div class="emphasis-box">
+      <p class="quote">
+        The Reclamation exists to humanize the future.
+      </p>
+    </div>
+
+    <div class="content-block">
+      <p>
+        As artificial intelligence accelerates, society faces a defining question:
+      </p>
+      <p style="text-align:center;font-size:1.2rem;font-weight:700;color:#fff;margin:20px 0;">
+        Who benefits when human intelligence becomes automated?
+      </p>
+      <p>
+        Today, human behavior, creativity, and decision-making quietly power the world's most valuable technologies — often <strong>without transparency, compensation, or agency</strong> for the individuals who generate that value.
+      </p>
+    </div>
+
+    <h3 class="section-subheader">The Reclamation explores an alternate reality in which humanity chose a different path.</h3>
+
+    <div class="content-block">
+      <p>Through character-driven storytelling, the series imagines a world where:</p>
+      <ul class="bullet-list">
+        <li>Human data is treated as labor, not exhaust</li>
+        <li>Technological progress and economic fairness are not opposites</li>
+        <li>Intelligence systems are accountable to the people who trained them</li>
+        <li>Innovation expands opportunity instead of concentrating power</li>
+      </ul>
+    </div>
+
+    <div class="content-block">
+      <p>
+        This project is driven by a genuine concern that, without intentional design, AI may deepen inequality between the rich and the poor — <strong>not because of malice, but because of inertia</strong>.
+      </p>
+      <p style="font-size:1.1rem;font-weight:700;color:#fff;margin-top:20px;">
+        <em>The Reclamation</em> does not argue against AI.<br>
+        It argues for human continuity within an AI-driven world.
+      </p>
+    </div>
+
+    <h3 class="section-subheader">By making abstract policy questions emotionally tangible, the series aims to:</h3>
+
+    <div class="content-block">
+      <ul class="bullet-list">
+        <li>Spark public conversation</li>
+        <li>Inspire ethical innovation</li>
+        <li>Encourage proactive governance</li>
+        <li>And remind audiences that the future is still a choice</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Core Ethos -->
+  <section class="section">
+    <h2 class="section-header">Core Ethos</h2>
+    
+    <div class="emphasis-box" style="padding:32px;">
+      <p class="quote" style="margin-bottom:20px;">Progress without equity is extraction.</p>
+      <p class="quote" style="margin-bottom:20px;">Intelligence without dignity is hollow.</p>
+      <p class="quote" style="margin-bottom:0;">The future is only worth building if humanity belongs in it.</p>
+    </div>
+  </section>
+
+  <footer>
+    <strong>LivePay</strong> — Building a human-centered financial ecosystem where people benefit from the value they create.<br>
+    <a href="index.html" style="color:#4fd1ff;text-decoration:none;margin-top:10px;display:inline-block;">← Back to Main Petition</a>
+  </footer>
+
+</div>
+
+</body>
+</html>
