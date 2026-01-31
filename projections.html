@@ -223,6 +223,21 @@
       margin-bottom:16px;
     }
 
+    /* Source reference */
+    .source-ref{
+      font-size:.85rem;
+      color:var(--muted2);
+      margin-top:6px;
+    }
+    .source-ref a{
+      color:#4fd1ff;
+      text-decoration:none;
+      border-bottom:1px dotted rgba(79,209,255,.4);
+    }
+    .source-ref a:hover{
+      border-bottom-style:solid;
+    }
+
     /* Note boxes */
     .note{
       background: rgba(124,92,255,.08);
@@ -348,7 +363,12 @@
     </div>
 
     <p class="muted" style="margin-top:16px;">
-      Example breakdown per person: <strong>Per Year Estimate</strong> <em style="color:var(--muted2);font-size:.9rem;">(based on site references)</em>
+      Example breakdown per person: <strong>Per Year Estimate</strong>
+    </p>
+    <p class="source-ref">
+      <em>According to these sources:</em><br>
+      • <a href="https://www.census.gov/newsroom/press-releases/2026/population-estimates.html" target="_blank" rel="noopener">Census.gov</a> — U.S. population: 341.8M (July 1, 2025)<br>
+      • <a href="https://www.cbo.gov/publication/59697" target="_blank" rel="noopener">Congressional Budget Office</a> — The Demographic Outlook: 2026 to 2056 (349M in 2026)
     </p>
     
     <div class="table-wrapper">
