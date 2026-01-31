@@ -68,7 +68,7 @@
     .brand .name{font-weight:800;letter-spacing:.2px;}
     .brand .tag{font-size:.85rem;color:var(--muted2)}
 
-    .nav{display:flex;gap:10px;align-items:center;}
+    .nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
     .chip{
       border:1px solid var(--border);
       background: rgba(18,24,43,.6);
@@ -80,6 +80,22 @@
       font-size:.9rem;
     }
     .chip:hover{border-color: rgba(255,255,255,.18)}
+    .chip.demo{
+      background: var(--grad);
+      color: white;
+      font-weight:800;
+      border:none;
+      box-shadow: 0 8px 20px rgba(79,209,255,.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .chip.demo:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(79,209,255,.4);
+    }
+    @keyframes pulse{
+      0%, 100% { box-shadow: 0 8px 20px rgba(79,209,255,.3); }
+      50% { box-shadow: 0 8px 25px rgba(79,209,255,.5); }
+    }
 
     /* Hero */
     .hero{text-align:center;margin:34px 0 34px;}
@@ -270,6 +286,7 @@
       </span>
     </a>
     <nav class="nav">
+      <a class="chip demo" href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">🚀 LivePay Demo</a>
       <a class="chip" href="projections.html">Projections</a>
       <a class="chip" href="movie.html">Movie</a>
       <a class="chip" href="#goals">Policy Goals</a>

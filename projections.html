@@ -85,6 +85,22 @@
       color: white;
       border-color: transparent;
     }
+    .chip.demo{
+      background: var(--grad);
+      color: white;
+      font-weight:800;
+      border:none;
+      box-shadow: 0 8px 20px rgba(79,209,255,.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .chip.demo:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(79,209,255,.4);
+    }
+    @keyframes pulse{
+      0%, 100% { box-shadow: 0 8px 20px rgba(79,209,255,.3); }
+      50% { box-shadow: 0 8px 25px rgba(79,209,255,.5); }
+    }
 
     /* Hero */
     .hero{text-align:center;margin:34px 0 34px;}
@@ -309,6 +325,7 @@
       </span>
     </a>
     <nav class="nav">
+      <a class="chip demo" href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">🚀 LivePay Demo</a>
       <a class="chip" href="index.html">Home</a>
       <a class="chip active" href="projections.html">Projections</a>
       <a class="chip" href="movie.html">Movie</a>
