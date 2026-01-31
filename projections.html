@@ -237,6 +237,40 @@
       color:var(--muted2);
     }
 
+    .usage-badge{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:6px;
+      font-size:.8rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .usage-minimal{
+      background:rgba(79,209,255,.15);
+      color:#4fd1ff;
+      border:1px solid rgba(79,209,255,.3);
+    }
+    .usage-casual{
+      background:rgba(124,92,255,.15);
+      color:#9d7fff;
+      border:1px solid rgba(124,92,255,.3);
+    }
+    .usage-regular{
+      background:rgba(255,159,64,.15);
+      color:#ff9f40;
+      border:1px solid rgba(255,159,64,.3);
+    }
+    .usage-active{
+      background:rgba(255,99,132,.15);
+      color:#ff6384;
+      border:1px solid rgba(255,99,132,.3);
+    }
+    .usage-power{
+      background:rgba(255,215,0,.15);
+      color:#ffd700;
+      border:1px solid rgba(255,215,0,.3);
+    }
+
     footer{text-align:center;color:var(--muted2);margin-top:40px;font-size:.9rem;padding-bottom:20px;}
 
     @media(max-width:768px){
@@ -319,6 +353,7 @@
       <table>
         <thead>
           <tr>
+            <th>Usage Level</th>
             <th>User Payout (P)</th>
             <th>Total Buyer Spend</th>
             <th>Infrastructure Fee</th>
@@ -327,30 +362,35 @@
         </thead>
         <tbody>
           <tr>
+            <td><span class="usage-badge usage-minimal">Minimal User</span></td>
             <td class="num">$1,200</td>
             <td class="num">$1,500</td>
             <td class="num">$225</td>
             <td class="num">$75</td>
           </tr>
           <tr>
+            <td><span class="usage-badge usage-casual">Casual User</span></td>
             <td class="num">$2,500</td>
             <td class="num">$3,125</td>
             <td class="num">$468.75</td>
             <td class="num">$156.25</td>
           </tr>
           <tr>
+            <td><span class="usage-badge usage-regular">Regular User</span></td>
             <td class="num">$3,500</td>
             <td class="num">$4,375</td>
             <td class="num">$656.25</td>
             <td class="num">$218.75</td>
           </tr>
           <tr>
+            <td><span class="usage-badge usage-active">Active User</span></td>
             <td class="num">$5,000</td>
             <td class="num">$6,250</td>
             <td class="num">$937.50</td>
             <td class="num">$312.50</td>
           </tr>
           <tr>
+            <td><span class="usage-badge usage-power">Power User</span></td>
             <td class="num">$8,500</td>
             <td class="num">$10,625</td>
             <td class="num">$1,593.75</td>
@@ -382,7 +422,7 @@
   <!-- Scenario A: Conservative -->
   <div class="card">
     <div class="scenario-header">Scenario A — Conservative</div>
-    <div class="scenario-desc">$1,200/year per participant</div>
+    <div class="scenario-desc">$1,200/year per participant • <span class="usage-badge usage-minimal">Minimal User</span> — Basic browsing, email, social media</div>
     
     <div class="table-wrapper">
       <table>
@@ -439,7 +479,7 @@
     <div class="scenario-header">Scenario B — Moderate</div>
     <div class="scenario-desc">$2,500 to $3,500/year per participant</div>
     
-    <h3>At P = $2,500</h3>
+    <h3>At P = $2,500 • <span class="usage-badge usage-casual">Casual User</span> — Streaming, shopping, messaging apps</h3>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -484,7 +524,7 @@
       </table>
     </div>
 
-    <h3>At P = $3,500</h3>
+    <h3>At P = $3,500 • <span class="usage-badge usage-regular">Regular User</span> — Daily streaming, gaming, content creation</h3>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -535,7 +575,7 @@
     <div class="scenario-header">Scenario C — Full "Fair AI Economy"</div>
     <div class="scenario-desc">$5,000 to $8,500/year per participant</div>
     
-    <h3>At P = $5,000</h3>
+    <h3>At P = $5,000 • <span class="usage-badge usage-active">Active User</span> — Heavy streaming, cloud work, multiple devices</h3>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -580,7 +620,7 @@
       </table>
     </div>
 
-    <h3>At P = $8,500</h3>
+    <h3>At P = $8,500 • <span class="usage-badge usage-power">Power User</span> — Professional content creator, developer, business owner</h3>
     <div class="table-wrapper">
       <table>
         <thead>
