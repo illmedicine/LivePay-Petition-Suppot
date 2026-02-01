@@ -467,19 +467,44 @@
 
   // --- Register Service Worker for PWA/Offline Support ---
   if ('serviceWorker' in navigator) {
-    // Unregister old service workers to clear cache
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((reg) => {
-        reg.unregister();
-      });
-    }).then(() => {
-      // Register fresh service worker
-      navigator.serviceWorker.register('service-worker.js?v=3').then((reg) => {
-        console.log('✓ Service Worker registered (fresh)');
-        reg.update();
-      }).catch((err) => {
+    navigator.serviceWorker.register('/service-worker.js', { updateViaCache: 'none' })
+      .then((registration) => {
+        console.log('✓ Service Worker registered');
+
+        // Check for updates every 60 seconds
+        setInterval(() => {
+          registration.update();
+        }, 60000);
+
+        // Handle service worker updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          console.log('🔄 Service Worker update found');
+
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New service worker is ready, prompt user to reload
+              console.log('✨ New version available! Reload to update.');
+              
+              // Auto-reload after 2 seconds to get new content
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000);
+            }
+          });
+        });
+
+        // Immediate update check
+        registration.update();
+      })
+      .catch((err) => {
         console.log('Service Worker registration failed:', err);
       });
+
+    // Listen for controller change (new service worker activated)
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      console.log('🔄 Service Worker controller changed, reloading...');
+      window.location.reload();
     });
   }
 
