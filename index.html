@@ -3,596 +3,906 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>LivePay Petition — Data Ownership & Fair Revenue Act</title>
-  <meta name="description" content="Sign the LivePay petition to support the Data Ownership & Fair Revenue Act and require an 85% revenue share for data owners. Donate to accelerate the campaign." />
-  <meta name="theme-color" content="#4fd1ff">
+  <title>I-RIS — Stream Original Series & IRL Content</title>
+  <meta name="description" content="I-RIS (Illy Robotic Instruments Studios) — Stream original mini-series, IRL shows, and exclusive content. A film production studio by Illy Robotics." />
+  <meta name="theme-color" content="#0a0a0a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="LivePay">
+  <meta name="apple-mobile-web-app-title" content="I-RIS">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
-  <!-- Firebase SDK (Compat version for script tags) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>IR</text></svg>">
   <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
     :root{
-      --bg:#0b0f1a;
-      --panel:#12182b;
-      --panel2:#0f1526;
-      --text:#ffffff;
-      --muted:#c7d2fe;
-      --muted2:#8b9cff;
+      --bg:#0a0a0a;
+      --surface:#141414;
+      --surface2:#1a1a1a;
+      --surface3:#222;
+      --text:#fff;
+      --text-muted:#a0a0a0;
+      --text-dim:#666;
+      --accent:#4fd1ff;
+      --accent2:#7c5cff;
+      --iris-grad:linear-gradient(135deg,#4fd1ff,#7c5cff);
+      --red:#e50914;
+      --green:#46d369;
+      --gold:#f5c518;
       --border:rgba(255,255,255,.08);
-      --shadow:0 20px 40px rgba(0,0,0,.4);
-      --grad:linear-gradient(90deg,#4fd1ff,#7c5cff);
+      --radius:6px;
     }
+
+    html{scroll-behavior:smooth;}
 
     body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
-      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.25), transparent 60%),
-                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.18), transparent 55%),
-                 var(--bg);
+      font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+      background:var(--bg);
       color:var(--text);
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
     }
 
-    .container{max-width:980px;margin:auto;padding:26px 18px 60px;}
-
-    /* Top bar */
-    .topbar{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter: blur(12px);
-      background: rgba(11,15,26,.65);
-      border-bottom:1px solid var(--border);
+    /* ===== STREAMING NAV BAR ===== */
+    .nav-bar{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.7) 70%,transparent);
+      padding:0;
+      transition:background .3s;
     }
-    .topbar-inner{
-      max-width:980px;margin:auto;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 18px;
+    .nav-bar.scrolled{
+      background:rgba(10,10,10,.98);
+      box-shadow:0 2px 20px rgba(0,0,0,.5);
     }
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
-    .mark{
-      width:34px;height:34px;border-radius:10px;
-      background: var(--grad);
-      box-shadow: 0 10px 25px rgba(79,209,255,.18);
-      position:relative;
+    .nav-inner{
+      max-width:1400px;margin:auto;
+      display:flex;align-items:center;
+      padding:16px 48px;
+      gap:32px;
     }
-    .mark:after{
-      content:"";
-      position:absolute;inset:9px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.65);
-      opacity:.55;
+    .nav-logo{
+      display:flex;align-items:center;gap:10px;
+      text-decoration:none;color:var(--text);
+      flex-shrink:0;
     }
-    .brand .name{font-weight:800;letter-spacing:.2px;}
-    .brand .tag{font-size:.85rem;color:var(--muted2)}
-
-    .nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-    .chip{
-      border:1px solid var(--border);
-      background: rgba(18,24,43,.6);
-      color: var(--muted);
-      padding:10px 12px;
-      border-radius: 999px;
+    .nav-logo-text{
+      font-size:1.6rem;
+      font-weight:900;
+      letter-spacing:3px;
+      background:var(--iris-grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .nav-logo-sub{
+      font-size:.6rem;
+      color:var(--text-muted);
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      display:block;
+      margin-top:-2px;
+    }
+    .nav-links{
+      display:flex;gap:24px;align-items:center;
+      list-style:none;flex:1;
+    }
+    .nav-links a{
+      color:var(--text-muted);
       text-decoration:none;
-      font-weight:600;
       font-size:.9rem;
+      font-weight:500;
+      transition:color .2s;
+      white-space:nowrap;
     }
-    .chip:hover{border-color: rgba(255,255,255,.18)}
-    .chip.demo{
-      background: var(--grad);
-      color: white;
+    .nav-links a:hover,.nav-links a.active{color:#fff;}
+    .nav-right{
+      display:flex;gap:12px;align-items:center;
+      margin-left:auto;
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 22px;
+      border-radius:var(--radius);
+      font-weight:700;
+      font-size:.9rem;
+      text-decoration:none;
+      border:none;cursor:pointer;
+      transition:all .2s;
+    }
+    .btn-primary{
+      background:var(--iris-grad);
+      color:#fff;
+      box-shadow:0 4px 15px rgba(79,209,255,.25);
+    }
+    .btn-primary:hover{
+      transform:scale(1.03);
+      box-shadow:0 6px 20px rgba(79,209,255,.35);
+    }
+    .btn-outline{
+      background:transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.3);
+    }
+    .btn-outline:hover{background:rgba(255,255,255,.08);}
+    .btn-play{
+      background:rgba(255,255,255,.95);
+      color:#000;
       font-weight:800;
-      border:none;
-      box-shadow: 0 8px 20px rgba(79,209,255,.3);
-      animation: pulse 2s ease-in-out infinite;
+      padding:12px 28px;
+      font-size:1.05rem;
     }
-    .chip.demo:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(79,209,255,.4);
+    .btn-play:hover{background:#fff;}
+    .btn-info{
+      background:rgba(255,255,255,.15);
+      color:#fff;
+      font-weight:700;
+      padding:12px 28px;
+      font-size:1.05rem;
+      backdrop-filter:blur(4px);
     }
-    @keyframes pulse{
-      0%, 100% { box-shadow: 0 8px 20px rgba(79,209,255,.3); }
-      50% { box-shadow: 0 8px 25px rgba(79,209,255,.5); }
-    }
+    .btn-info:hover{background:rgba(255,255,255,.25);}
+    .btn-sm{padding:8px 16px;font-size:.8rem;}
 
-    /* Hero */
-    .hero{text-align:center;margin:34px 0 34px;}
-    .kicker{
-      display:inline-flex;gap:10px;align-items:center;
-      padding:8px 12px;border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(18,24,43,.6);
-      color:var(--muted);
-      font-size:.9rem;
+    /* ===== HERO BILLBOARD ===== */
+    .hero-billboard{
+      position:relative;
+      width:100%;
+      min-height:85vh;
+      display:flex;align-items:flex-end;
+      overflow:hidden;
+      background:#000;
+    }
+    .hero-bg{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 120% 80% at 70% 30%, rgba(79,209,255,.12), transparent 50%),
+        radial-gradient(ellipse 80% 60% at 20% 60%, rgba(124,92,255,.1), transparent 50%),
+        linear-gradient(180deg, #0a0a0a 0%, #0d1117 30%, #0a0e1a 60%, #0a0a0a 100%);
+    }
+    .hero-bg::after{
+      content:"";
+      position:absolute;
+      bottom:0;left:0;right:0;
+      height:300px;
+      background:linear-gradient(transparent,var(--bg));
+    }
+    .hero-iframe-bg{
+      position:absolute;inset:0;
+      overflow:hidden;
+      opacity:.35;
+    }
+    .hero-iframe-bg iframe{
+      position:absolute;
+      top:50%;left:50%;
+      width:180%;height:180%;
+      transform:translate(-50%,-50%);
+      border:none;
+      pointer-events:none;
+    }
+    .hero-content{
+      position:relative;z-index:2;
+      max-width:1400px;
+      margin:auto;
+      padding:0 48px 80px;
+      width:100%;
+    }
+    .hero-studio-tag{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.8rem;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--accent);
       margin-bottom:16px;
     }
-    .kicker b{color:#fff}
-
-    .hero h1{
-      font-size: clamp(2.15rem, 5vw, 3.15rem);
-      margin: 0 0 12px;
-      background: var(--grad);
+    .hero-studio-tag svg{width:16px;height:16px;}
+    .hero-title{
+      font-size:clamp(3rem,7vw,5.5rem);
+      font-weight:900;
+      letter-spacing:-1px;
+      line-height:.95;
+      margin-bottom:16px;
+      text-shadow:0 4px 30px rgba(0,0,0,.6);
+    }
+    .hero-title span{
+      display:block;
+      background:var(--iris-grad);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
-      line-height:1.05;
-      letter-spacing:-.5px;
+      font-size:.35em;
+      letter-spacing:4px;
+      margin-bottom:8px;
     }
-    .hero p{font-size:1.1rem;color:var(--muted);max-width:760px;margin:0 auto 18px;}
-
-    /* Buttons */
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      background: var(--grad);
-      padding: 14px 20px;
-      border-radius: 14px;
-      color: white;
-      text-decoration: none;
-      font-weight: 800;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: transform .15s ease, box-shadow .15s ease;
-      box-shadow: 0 18px 30px rgba(124,92,255,.18);
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+    .hero-meta{
+      display:flex;gap:16px;align-items:center;
+      margin-bottom:16px;
+      flex-wrap:wrap;
     }
-    .btn:hover{transform: translateY(-2px);}
-    .btn:active{transform: translateY(0);}
-
-    @media(max-width: 600px){
-      .btn{
-        padding: 12px 16px;
-        font-size: 0.95rem;
-        min-height: 44px;
-      }
+    .hero-badge{
+      padding:3px 8px;border-radius:3px;
+      font-size:.75rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.5px;
+    }
+    .hero-badge.new{background:var(--green);color:#000;}
+    .hero-badge.series{background:var(--accent);color:#000;}
+    .hero-meta-text{color:var(--text-muted);font-size:.9rem;}
+    .hero-desc{
+      max-width:550px;
+      font-size:1.1rem;
+      line-height:1.5;
+      color:rgba(255,255,255,.85);
+      margin-bottom:28px;
+      text-shadow:0 2px 10px rgba(0,0,0,.5);
+    }
+    .hero-actions{
+      display:flex;gap:12px;flex-wrap:wrap;
     }
 
-    .btn.secondary{
-      background: rgba(18,24,43,.7);
-      border:1px solid var(--border);
-      box-shadow:none;
-      font-weight:700;
+    /* ===== CONTENT ROWS (Netflix-style) ===== */
+    .content-area{
+      max-width:1400px;
+      margin:auto;
+      padding:0 48px;
     }
 
-    .row-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
-
-    /* Cards */
-    .grid{display:grid;grid-template-columns:1fr;gap:16px;}
-    @media(min-width: 860px){
-      .grid{grid-template-columns: 1.2fr .8fr;align-items:start;}
+    .row{
+      margin-bottom:48px;
     }
-
-    .card{
-      background: linear-gradient(180deg, rgba(18,24,43,.95), rgba(15,21,38,.95));
-      padding: 22px;
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      border:1px solid var(--border);
+    .row-header{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:18px;
+      padding:0 4px;
     }
-
-    h2{margin:0 0 10px;font-size:1.35rem;}
-    .muted{color:var(--muted)}
-
-    ul{margin:10px 0 0 18px;color:var(--muted);}
-    li{margin:6px 0;}
-
-    /* Form */
-    form{display:grid;gap:12px;}
-    input, select{
-      padding: 13px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(11,15,26,.6);
-      color: white;
-      font-size: 1rem;
-      outline: none;
-      font-family: inherit;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    input::placeholder{color: rgba(199,210,254,.65)}
-    input:focus{border-color: rgba(79,209,255,.45)}
-
-    @media(max-width: 600px){
-      input, select{
-        padding: 15px 14px;
-        font-size: 16px;
-        min-height: 44px;
-      }
-    }
-
-    .two{display:grid;grid-template-columns:1fr;gap:12px;}
-    @media(min-width: 600px){.two{grid-template-columns:1fr 1fr;}}
-
-    .checkbox{
-      display:flex;gap:12px;align-items:center;
-      font-size:.92rem;color:var(--muted);
-      padding:12px 14px;border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(11,15,26,.4);
-      cursor: pointer;
-      min-height: 44px;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    .checkbox input{
-      margin: 0;
-      width: 20px;
-      height: 20px;
-      min-width: 20px;
-      flex-shrink: 0;
-      cursor: pointer;
-      accent-color: #4fd1ff;
-      appearance: auto;
-    }
-    .checkbox input:focus{
-      outline: 2px solid #4fd1ff;
-      outline-offset: 2px;
-    }
-
-    @media(max-width: 600px){
-      input, select{
-        padding: 15px 14px;
-        font-size: 16px;
-        min-height: 44px;
-      }
-      .checkbox input{
-        width: 24px;
-        height: 24px;
-      }
-    }
-
-    .count{
-      font-size: 1.9rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-      background: var(--grad);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
-    /* Donate */
-    .donate-grid{display:grid;gap:10px;grid-template-columns:1fr;}
-    @media(min-width: 600px){.donate-grid{grid-template-columns: repeat(3, 1fr);}}
-    .donate-btn{
-      display:flex;flex-direction:column;gap:6px;
-      text-decoration:none;color:white;
-      border:1px solid var(--border);
-      background: rgba(11,15,26,.45);
-      border-radius:16px;
-      padding:14px 14px;
+    .row-title{
+      font-size:1.4rem;
       font-weight:800;
-      transition: transform .15s ease, border-color .15s ease;
+      letter-spacing:-.3px;
     }
-    .donate-btn:hover{transform: translateY(-2px);border-color: rgba(255,255,255,.18)}
-    .donate-btn small{color:var(--muted);font-weight:700}
+    .row-title .accent{color:var(--accent);}
+    .row-more{
+      color:var(--accent);
+      font-size:.85rem;
+      font-weight:600;
+      text-decoration:none;
+      display:flex;align-items:center;gap:4px;
+    }
+    .row-more:hover{text-decoration:underline;}
 
-    footer{text-align:center;color:var(--muted2);margin-top:26px;font-size:.9rem;}
-    .tiny{color:rgba(199,210,254,.7);font-size:.85rem;line-height:1.4}
+    /* Horizontal scroll row */
+    .card-scroll{
+      display:flex;
+      gap:16px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      padding-bottom:8px;
+      scrollbar-width:none;
+    }
+    .card-scroll::-webkit-scrollbar{display:none;}
+
+    /* Title Cards (landscape) */
+    .title-card{
+      flex:0 0 420px;
+      scroll-snap-align:start;
+      border-radius:8px;
+      overflow:hidden;
+      background:var(--surface);
+      cursor:pointer;
+      transition:transform .25s,box-shadow .25s;
+      position:relative;
+    }
+    .title-card:hover{
+      transform:scale(1.04);
+      box-shadow:0 16px 40px rgba(0,0,0,.6);
+      z-index:5;
+    }
+    .title-card-video{
+      width:100%;
+      aspect-ratio:16/9;
+      background:#000;
+      position:relative;
+      overflow:hidden;
+    }
+    .title-card-video iframe{
+      width:100%;height:100%;border:none;
+    }
+    .title-card-video .play-overlay{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.3);
+      opacity:0;
+      transition:opacity .2s;
+    }
+    .title-card:hover .play-overlay{opacity:1;}
+    .play-overlay .play-circle{
+      width:56px;height:56px;
+      border-radius:50%;
+      background:rgba(255,255,255,.9);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .play-overlay .play-circle svg{
+      width:22px;height:22px;fill:#000;margin-left:3px;
+    }
+    .title-card-body{
+      padding:16px 18px 20px;
+    }
+    .title-card-row{
+      display:flex;align-items:center;gap:10px;
+      margin-bottom:8px;
+    }
+    .card-badge{
+      padding:2px 7px;border-radius:3px;
+      font-size:.7rem;font-weight:700;letter-spacing:.3px;
+      text-transform:uppercase;
+    }
+    .card-badge.live{background:var(--green);color:#000;}
+    .card-badge.new{background:var(--gold);color:#000;}
+    .card-badge.coming{background:var(--accent2);color:#fff;}
+    .card-match{color:var(--green);font-weight:700;font-size:.85rem;}
+    .title-card-name{
+      font-size:1.15rem;font-weight:800;
+      margin-bottom:4px;letter-spacing:.2px;
+    }
+    .title-card-genre{
+      color:var(--text-muted);font-size:.82rem;
+      display:flex;align-items:center;gap:8px;
+    }
+    .title-card-genre .dot{color:var(--text-dim);}
+    .title-card-desc{
+      color:var(--text-muted);
+      font-size:.85rem;
+      line-height:1.5;
+      margin-top:10px;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    /* Portrait Cards (for IRL/shows) */
+    .show-card{
+      flex:0 0 360px;
+      scroll-snap-align:start;
+      border-radius:12px;
+      overflow:hidden;
+      background:var(--surface);
+      cursor:pointer;
+      transition:transform .25s,box-shadow .25s;
+      position:relative;
+    }
+    .show-card:hover{
+      transform:scale(1.04);
+      box-shadow:0 20px 50px rgba(0,0,0,.7);
+      z-index:5;
+    }
+    .show-card-img{
+      width:100%;
+      aspect-ratio:3/4;
+      object-fit:contain;
+      object-position:center top;
+      display:block;
+      background:var(--surface2);
+    }
+    .show-card-overlay{
+      position:absolute;
+      bottom:0;left:0;right:0;
+      padding:80px 20px 22px;
+      background:linear-gradient(transparent,rgba(0,0,0,.92) 50%);
+    }
+    .show-card-badge{
+      display:inline-block;
+      padding:4px 10px;border-radius:4px;
+      font-size:.75rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.5px;
+      margin-bottom:8px;
+    }
+    .show-card-badge.irl{background:#e50914;color:#fff;}
+    .show-card-badge.upcoming{background:var(--gold);color:#000;}
+    .show-card-title{
+      font-size:1.3rem;font-weight:800;
+      margin-bottom:4px;
+    }
+    .show-card-sub{
+      font-size:.9rem;color:var(--text-muted);
+    }
+    .show-card-desc{
+      font-size:.85rem;
+      color:rgba(255,255,255,.65);
+      line-height:1.5;
+      margin-top:10px;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .show-rank{
+      position:absolute;top:16px;left:16px;
+      width:38px;height:38px;border-radius:8px;
+      background:rgba(0,0,0,.75);
+      backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:1.1rem;
+      border:1px solid rgba(255,255,255,.15);
+    }
+
+    /* ===== FEATURED PLAYER SECTION ===== */
+    .featured-player{
+      margin:16px 0 56px;
+      border-radius:12px;
+      overflow:hidden;
+      background:#000;
+      position:relative;
+    }
+    .featured-video{
+      width:100%;
+      aspect-ratio:16/9;
+    }
+    .featured-video iframe{
+      width:100%;height:100%;border:none;
+    }
+
+    /* ===== CATEGORY TABS ===== */
+    .cat-tabs{
+      display:flex;gap:8px;
+      margin-bottom:32px;
+      overflow-x:auto;
+      scrollbar-width:none;
+      padding-bottom:4px;
+    }
+    .cat-tabs::-webkit-scrollbar{display:none;}
+    .cat-tab{
+      padding:8px 20px;
+      border-radius:999px;
+      font-size:.85rem;
+      font-weight:600;
+      white-space:nowrap;
+      background:var(--surface2);
+      color:var(--text-muted);
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .cat-tab:hover{color:#fff;background:var(--surface3);}
+    .cat-tab.active{
+      background:var(--iris-grad);
+      color:#fff;
+      border-color:transparent;
+    }
+
+    /* ===== ABOUT STRIP ===== */
+    .about-strip{
+      background:var(--surface);
+      border-top:1px solid var(--border);
+      padding:64px 48px;
+      margin-top:32px;
+    }
+    .about-inner{
+      max-width:1400px;margin:auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:48px;
+      align-items:center;
+    }
+    .about-text h2{
+      font-size:2rem;font-weight:900;
+      margin-bottom:16px;
+    }
+    .about-text h2 span{
+      background:var(--iris-grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .about-text p{
+      color:var(--text-muted);
+      line-height:1.7;
+      margin-bottom:16px;
+      font-size:.95rem;
+    }
+    .about-text p strong{color:#fff;}
+    .about-platforms{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-top:20px;
+    }
+    .about-platforms span{
+      padding:6px 16px;border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      font-size:.8rem;font-weight:600;
+      color:var(--text-muted);
+    }
+    .about-stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .stat-card{
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:24px;
+      text-align:center;
+    }
+    .stat-num{
+      font-size:2.2rem;font-weight:900;
+      background:var(--iris-grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:4px;
+    }
+    .stat-label{
+      font-size:.8rem;color:var(--text-muted);
+      text-transform:uppercase;letter-spacing:1px;
+      font-weight:600;
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer{
+      padding:48px 48px 32px;
+      border-top:1px solid var(--border);
+      max-width:1400px;margin:auto;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:32px;
+      margin-bottom:32px;
+    }
+    .footer-col h4{
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:1.5px;
+      color:var(--text-muted);
+      margin-bottom:14px;
+    }
+    .footer-col a{
+      display:block;
+      color:var(--text-dim);
+      text-decoration:none;
+      font-size:.85rem;
+      margin-bottom:10px;
+      transition:color .2s;
+    }
+    .footer-col a:hover{color:#fff;}
+    .footer-bottom{
+      display:flex;align-items:center;justify-content:space-between;
+      padding-top:24px;
+      border-top:1px solid var(--border);
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    .footer-bottom p{
+      color:var(--text-dim);font-size:.8rem;
+    }
+    .footer-logo{
+      font-weight:900;font-size:1.1rem;letter-spacing:2px;
+      background:var(--iris-grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:900px){
+      .nav-inner{padding:12px 20px;gap:16px;}
+      .nav-links{display:none;}
+      .hero-content{padding:0 20px 60px;}
+      .hero-title{font-size:2.4rem;}
+      .hero-desc{font-size:.95rem;max-width:100%;}
+      .content-area{padding:0 20px;}
+      .title-card{flex:0 0 320px;}
+      .show-card{flex:0 0 280px;}
+      .about-strip{padding:40px 20px;}
+      .about-inner{grid-template-columns:1fr;}
+      .footer-grid{grid-template-columns:1fr 1fr;}
+      .site-footer{padding:32px 20px;}
+      .hero-billboard{min-height:70vh;}
+    }
+    @media(max-width:500px){
+      .title-card{flex:0 0 85vw;}
+      .show-card{flex:0 0 75vw;}
+      .hero-billboard{min-height:65vh;}
+      .about-stats{grid-template-columns:1fr;}
+    }
   </style>
 </head>
 <body>
 
-<!-- Sticky top bar -->
-<div class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#top">
-      <span class="mark" aria-hidden="true"></span>
+<!-- ===== STREAMING NAV BAR ===== -->
+<nav class="nav-bar" id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
       <span>
-        <div class="name">LivePay</div>
-        <div class="tag">Own your data • Earn your value</div>
+        <div class="nav-logo-text">I-RIS</div>
+        <div class="nav-logo-sub">Illy Robotic Instruments Studios</div>
       </span>
     </a>
-    <nav class="nav">
-      <a class="chip demo" href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">🚀 LivePay Demo</a>
-      <a class="chip" href="projections.html">Projections</a>
-      <a class="chip" href="movie.html">Movie</a>
-      <a class="chip" href="#goals">Policy Goals</a>
-      <a class="chip" href="#donate">Donate</a>
-      <a class="chip" href="#sign">Sign</a>
-    </nav>
-  </div>
-</div>
-
-<div id="top" class="container">
-
-  <section class="hero">
-    <div class="kicker">Petition to Congress • <b>85% revenue share</b> for data owners</div>
-    <h1>Reclaim Your Data. Reclaim Your Wealth.</h1>
-    <p>
-      Personal data powers a multi‑billion‑dollar market. LivePay is mobilizing public support for the
-      <b>Data Ownership &amp; Fair Revenue Act</b> — recognizing personal data as user‑owned digital property and
-      requiring companies to return <b>at least 85%</b> of data monetization revenue to the people who create the value.
-    </p>
-
-    <div class="row-actions">
-      <a href="#sign" class="btn">✅ Sign the Petition</a>
-      <a href="#donate" class="btn secondary">💳 Donate via Stripe</a>
-      <a href="#share" class="btn secondary">🔁 Share</a>
-    </div>
-  </section>
-
-  <div class="grid">
-    <section class="card">
-      <h2>Why This Matters</h2>
-      <p class="muted">
-        Today, data brokers and large platforms can collect, package, and monetize personal information with limited transparency.
-        The public generates the value — but rarely shares in the revenue.
-      </p>
-      <p class="muted">
-        This petition supports a federal framework that makes data markets transparent, opt‑in, auditable, and fair — so people
-        can be paid for the economic value their data creates.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>What Your Support Unlocks</h2>
-      <ul>
-        <li>Verified signature collection (mobile + web)</li>
-        <li>Congress-ready policy brief &amp; outreach kit</li>
-        <li>Compliance-first infrastructure for transparent payouts</li>
-        <li>Momentum for hearings, sponsors, and press coverage</li>
-      </ul>
-      <p class="tiny" style="margin-top:10px">
-        Donations help fund advocacy, infrastructure, and campaign operations. Donations are not a vote; your signature is.
-      </p>
-    </section>
-  </div>
-
-  <section id="goals" class="card">
-    <h2>Policy Goals</h2>
-    <ul>
-      <li>Recognize personal data as private digital property</li>
-      <li>Mandate a minimum 85% revenue share for data owners</li>
-      <li>Require transparency and opt-in consent</li>
-      <li>License and regulate data brokers</li>
-      <li>Protect Americans from unauthorized resale</li>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="#originals">Originals</a></li>
+      <li><a href="#irl">IRL Shows</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="petition.html">LivePay Petition</a></li>
+      <li><a href="projections.html">Projections</a></li>
     </ul>
-  </section>
+    <div class="nav-right">
+      <a class="btn btn-outline btn-sm" href="petition.html">Back to LivePay</a>
+      <a class="btn btn-primary btn-sm" href="petition.html#donate">Support I-RIS</a>
+    </div>
+  </div>
+</nav>
 
-  <section id="donate" class="card donation-box">
-    <h2>Fuel the LivePay Movement</h2>
-    <p>
-      Donations accelerate platform development, policy advocacy, security infrastructure, and national awareness campaigns. Help us build a future where people — not corporations — benefit from their data.
+<!-- ===== HERO BILLBOARD ===== -->
+<section class="hero-billboard">
+  <div class="hero-bg"></div>
+  <div class="hero-iframe-bg">
+    <iframe 
+      src="https://www.youtube.com/embed/Jo3ZVujhak0?autoplay=1&mute=1&loop=1&playlist=Jo3ZVujhak0&controls=0&showinfo=0&modestbranding=1" 
+      allow="autoplay;encrypted-media" 
+      loading="lazy"
+      title="The Reclamation Background">
+    </iframe>
+  </div>
+  <div class="hero-content">
+    <div class="hero-studio-tag">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      I-RIS ORIGINAL
+    </div>
+    <h1 class="hero-title">
+      <span>MINI SERIES</span>
+      THE RECLAMATION
+    </h1>
+    <div class="hero-meta">
+      <span class="hero-badge new">New Episodes</span>
+      <span class="hero-badge series">Sci-Fi</span>
+      <span class="hero-meta-text">Season 1</span>
+      <span class="hero-meta-text">•</span>
+      <span class="hero-meta-text">2025</span>
+      <span class="hero-meta-text">•</span>
+      <span class="hero-meta-text">TV-14</span>
+    </div>
+    <p class="hero-desc">
+      What if humanity acted early to ensure that the rise of artificial intelligence strengthened 
+      human dignity rather than replaced it? An alternate reality where data is treated as labor 
+      and innovation expands opportunity.
     </p>
+    <div class="hero-actions">
+      <a class="btn btn-play" href="#watch-reclamation">▶ Play</a>
+      <a class="btn btn-info" href="#originals">ℹ More Info</a>
+    </div>
+  </div>
+</section>
 
-    <!-- PayPal Donation Link -->
-    <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" class="btn donate-btn">
-      Donate via PayPal
-    </a>
-  </section>
+<!-- ===== CONTENT AREA ===== -->
+<div class="content-area">
 
-  <section id="donate" class="card">
-    <h2>Donate via PayPal</h2>
-    <p class="muted">
-      Support the LivePay movement and help us build a future where people benefit from their data.
-      <b>All donations are processed securely through PayPal</b>.
-    </p>
+  <!-- Category Tabs -->
+  <div class="cat-tabs" style="margin-top:40px;">
+    <span class="cat-tab active">All Content</span>
+    <span class="cat-tab">Originals</span>
+    <span class="cat-tab">IRL Shows</span>
+    <span class="cat-tab">Coming Soon</span>
+    <span class="cat-tab">Sci-Fi</span>
+    <span class="cat-tab">Reality</span>
+    <span class="cat-tab">Entertainment</span>
+  </div>
 
-    <div class="donate-grid">
-      <a class="donate-btn" id="donate25" href="https://www.paypal.com/paypalme/illmedicine/25" target="_blank" rel="noopener">
-        Donate $25
-        <small>Fuel outreach + signature growth</small>
-      </a>
-      <a class="donate-btn" id="donate50" href="https://www.paypal.com/paypalme/illmedicine/50" target="_blank" rel="noopener">
-        Donate $50
-        <small>Support policy + legal engagement</small>
-      </a>
-      <a class="donate-btn" id="donate100" href="https://www.paypal.com/paypalme/illmedicine/100" target="_blank" rel="noopener">
-        Donate $100
-        <small>Build infrastructure + credibility</small>
-      </a>
+  <!-- ===== ORIGINALS ROW ===== -->
+  <section class="row" id="originals">
+    <div class="row-header">
+      <h2 class="row-title">I-RIS <span class="accent">Originals</span></h2>
     </div>
 
-    <p class="tiny" style="margin-top:12px;">
-      💡 Tip: You can also donate any custom amount directly on PayPal: <a href="https://www.paypal.com/paypalme/illmedicine" target="_blank" style="color: #4fd1ff; text-decoration: underline;">paypal.com/paypalme/illmedicine</a>
-    </p>
-  </section>
+    <div class="card-scroll">
 
-  <section id="sign" class="card">
-    <h2>Sign the Petition</h2>
-    <div class="count" id="signatureCount">0 Signatures</div>
-
-    <form id="petitionForm">
-      <input type="text" placeholder="Full Name" required>
-      <input type="email" placeholder="Email Address" required>
-
-      <div class="two">
-        <input type="text" placeholder="City" required>
-        <input type="text" placeholder="State" required>
+      <!-- The Reclamation Card -->
+      <div class="title-card" id="watch-reclamation">
+        <div class="title-card-video">
+          <iframe 
+            src="https://www.youtube.com/embed/Jo3ZVujhak0?mute=1&loop=1&playlist=Jo3ZVujhak0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen 
+            title="The Reclamation"
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="title-card-body">
+          <div class="title-card-row">
+            <span class="card-badge live">Streaming</span>
+            <span class="card-match">98% Match</span>
+          </div>
+          <div class="title-card-name">The Reclamation</div>
+          <div class="title-card-genre">
+            Sci-Fi <span class="dot">•</span> Drama <span class="dot">•</span> Mini-Series
+          </div>
+          <p class="title-card-desc">
+            An alternate reality where humanity ensured AI strengthened human dignity. 
+            Set in a world where data is labor and innovation expands opportunity.
+          </p>
+        </div>
       </div>
 
-      <div class="two">
-        <input type="text" placeholder="ZIP Code" required>
-        <select required>
-          <option value="" disabled selected>Country</option>
-          <option>United States</option>
-          <option>Canada</option>
-          <option>United Kingdom</option>
-          <option>Australia</option>
-          <option>Other</option>
-        </select>
+      <!-- The Captains Quarters Card -->
+      <div class="title-card">
+        <div class="title-card-video">
+          <iframe 
+            src="https://www.youtube.com/embed/-nH5V7X5jPY?mute=1" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen 
+            title="The Captains Quarters"
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="title-card-body">
+          <div class="title-card-row">
+            <span class="card-badge new">New</span>
+            <span class="card-match">95% Match</span>
+          </div>
+          <div class="title-card-name">The Captains Quarters</div>
+          <div class="title-card-genre">
+            Drama <span class="dot">•</span> Indie <span class="dot">•</span> Mini-Series
+          </div>
+          <p class="title-card-desc">
+            Step inside The Captains Quarters for an immersive journey through stories that 
+            challenge convention and redefine independent storytelling.
+          </p>
+        </div>
       </div>
 
-      <label class="checkbox">
-        <input type="checkbox" required>
-        <span>I certify this is my real identity and support the <b>Data Ownership &amp; Fair Revenue Act</b>.</span>
-      </label>
-
-      <button class="btn" type="submit">Submit Signature</button>
-      <div class="tiny">
-        ✅ Signatures are securely recorded and will be displayed on the live petition tracker.
-      </div>
-    </form>
-  </section>
-
-  <section id="share" class="card">
-    <h2>Share</h2>
-    <p class="muted">Copy the link and share the petition with your community.</p>
-    <div class="two">
-      <input id="shareUrl" type="text" readonly>
-      <button class="btn secondary" id="copyBtn" type="button">Copy Link</button>
     </div>
-    <p class="tiny" style="margin-top:10px">Pro tip: add this page to your Linktree, Discord server, and X/TikTok bio.</p>
   </section>
 
-  <footer>
-    LivePay — Building a human-centered financial ecosystem where people benefit from the value they create.
-  </footer>
+  <!-- ===== IRL SHOWS ROW ===== -->
+  <section class="row" id="irl">
+    <div class="row-header">
+      <h2 class="row-title">Upcoming <span class="accent">IRL Shows</span></h2>
+    </div>
+
+    <div class="card-scroll">
+
+      <!-- Swami Tsunami -->
+      <div class="show-card">
+        <img class="show-card-img" src="images/swami-tsunami.jpg" alt="Swami Tsunami - Live in Miami">
+        <span class="show-rank">1</span>
+        <div class="show-card-overlay">
+          <div class="show-card-badge irl">IRL Original</div>
+          <div class="show-card-title">Live in Miami</div>
+          <div class="show-card-sub">Swami Tsunami</div>
+          <div class="show-card-desc">An electrifying IRL experience captured live from the heart of Miami. Raw energy, unfiltered moments, and the pulse of the city.</div>
+        </div>
+      </div>
+
+      <!-- JacobMedia -->
+      <div class="show-card">
+        <img class="show-card-img" src="images/yopoppa-cave.png" alt="JacobMedia - YoPoppas Cave">
+        <span class="show-rank">2</span>
+        <div class="show-card-overlay">
+          <div class="show-card-badge irl">IRL Original</div>
+          <div class="show-card-title">YoPoppas Cave</div>
+          <div class="show-card-sub">JacobMedia</div>
+          <div class="show-card-desc">Enter YoPoppas Cave — a high-energy creator hub blending gaming, entertainment, and community in one unpredictable IRL format.</div>
+        </div>
+      </div>
+
+      <!-- MilkyMoMo -->
+      <div class="show-card">
+        <img class="show-card-img" src="images/milky-momo.png" alt="MilkyMoMo - Rizz Rate Dating">
+        <span class="show-rank">3</span>
+        <div class="show-card-overlay">
+          <div class="show-card-badge upcoming">Coming Soon</div>
+          <div class="show-card-title">Rizz Rate Dating</div>
+          <div class="show-card-sub">MilkyMoMo</div>
+          <div class="show-card-desc">A bold dating and social experiment show where contestants put their charisma to the test in real-time. Comedy, chemistry, and pure entertainment.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FEATURED: CAPTAINS QUARTERS ===== -->
+  <section class="row">
+    <div class="row-header">
+      <h2 class="row-title">Now Playing: <span class="accent">The Captains Quarters</span></h2>
+    </div>
+    <div class="featured-player">
+      <div class="featured-video">
+        <iframe 
+          src="https://www.youtube.com/embed/-nH5V7X5jPY" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen 
+          title="The Captains Quarters — Full Episode"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
 
 </div>
+
+<!-- ===== ABOUT STRIP ===== -->
+<section class="about-strip" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <h2>About <span>I-RIS</span></h2>
+      <p>
+        <strong>Illy Robotic Instruments Studios (I-RIS)</strong> is the film production and content 
+        division of Illy Robotics — built to develop, produce, and distribute original entertainment 
+        to global audiences.
+      </p>
+      <p>
+        Like Zeus Network and Tubi, I-RIS cultivates original programming — from scripted sci-fi 
+        mini-series to raw IRL creator content — designed for the world's biggest streaming platforms 
+        and network television.
+      </p>
+      <p>
+        Our mission: <strong>bring independent, technology-driven stories to mainstream audiences</strong> 
+        and prove that original voices belong on the same stage as major studios.
+      </p>
+      <div class="about-platforms">
+        <span>Tubi</span>
+        <span>Netflix</span>
+        <span>HBO</span>
+        <span>Network TV</span>
+        <span>Prime Video</span>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Original Series</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">IRL Shows</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Platforms Targeted</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Stories to Tell</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>I-RIS</h4>
+      <a href="#originals">Originals</a>
+      <a href="#irl">IRL Shows</a>
+      <a href="#about">About the Studio</a>
+    </div>
+    <div class="footer-col">
+      <h4>Series</h4>
+      <a href="#watch-reclamation">The Reclamation</a>
+      <a href="#">The Captains Quarters</a>
+    </div>
+    <div class="footer-col">
+      <h4>IRL Content</h4>
+      <a href="#">Swami Tsunami — Live in Miami</a>
+      <a href="#">JacobMedia — YoPoppas Cave</a>
+      <a href="#">MilkyMoMo — Rizz Rate Dating</a>
+    </div>
+    <div class="footer-col">
+      <h4>LivePay</h4>
+      <a href="petition.html">Petition</a>
+      <a href="projections.html">Projections</a>
+      <a href="petition.html#donate">Donate</a>
+      <a href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-logo">I-RIS</span>
+    <p>&copy; 2025 Illy Robotic Instruments Studios. A division of Illy Robotics. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
-  // --- Firebase Configuration ---
-  const firebaseConfig = {
-    apiKey: "AIzaSyAPDuRborL8nacI7j6aFGDUFopn_C9kN_A",
-    authDomain: "livepay-petition.firebaseapp.com",
-    projectId: "livepay-petition",
-    storageBucket: "livepay-petition.firebasestorage.app",
-    messagingSenderId: "962896076422",
-    appId: "1:962896076422:web:35db5ad1acba6501d3fb07",
-    measurementId: "G-8JYF50F7R8"
-  };
-
-  // Initialize Firebase - make db global for console access
-  try {
-    firebase.initializeApp(firebaseConfig);
-    window.db = firebase.firestore();
-    console.log('✓ Firebase initialized successfully');
-  } catch (error) {
-    console.error('❌ Firebase initialization failed:', error);
-  }
-
-  // --- Register Service Worker for PWA/Offline Support ---
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js', { updateViaCache: 'none' })
-      .then((registration) => {
-        console.log('✓ Service Worker registered');
-
-        // Check for updates every 60 seconds
-        setInterval(() => {
-          registration.update();
-        }, 60000);
-
-        // Handle service worker updates
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          console.log('🔄 Service Worker update found');
-
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker is ready, prompt user to reload
-              console.log('✨ New version available! Reload to update.');
-              
-              // Auto-reload after 2 seconds to get new content
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-            }
-          });
-        });
-
-        // Immediate update check
-        registration.update();
-      })
-      .catch((err) => {
-        console.log('Service Worker registration failed:', err);
-      });
-
-    // Listen for controller change (new service worker activated)
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('🔄 Service Worker controller changed, reloading...');
-      window.location.reload();
-    });
-  }
-
-  // --- Real-time signature count from Firebase ---
-  function updateSignatureCount() {
-    window.db.collection('petitions').doc('livepay').onSnapshot((doc) => {
-      if (doc.exists) {
-        const count = doc.data().signatures || 0;
-        document.getElementById('signatureCount').innerText = count + " Signatures";
-      } else {
-        document.getElementById('signatureCount').innerText = "0 Signatures";
-      }
-    }, (error) => {
-      // Fallback: show 0 if Firebase unavailable
-      console.log('Firebase unavailable, using fallback');
-      document.getElementById('signatureCount').innerText = "0 Signatures";
-    });
-  }
-
-  // Initialize on page load
-  updateSignatureCount();
-
-  // --- Petition Form Submission ---
-  const form = document.getElementById('petitionForm');
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    // Get form data
-    const fullName = form.querySelector('input[placeholder="Full Name"]').value;
-    const email = form.querySelector('input[placeholder="Email Address"]').value;
-    const city = form.querySelector('input[placeholder="City"]').value;
-    const state = form.querySelector('input[placeholder="State"]').value;
-    const zip = form.querySelector('input[placeholder="ZIP Code"]').value;
-    const country = form.querySelector('select').value;
-
-    try {
-      // Wait for Firebase to be ready
-      if (!window.db) {
-        throw new Error('Firebase not initialized');
-      }
-
-      // Add signature to Firebase
-      await window.db.collection('petitions').doc('livepay').update({
-        signatures: firebase.firestore.FieldValue.increment(1),
-        lastSignedAt: new Date(),
-      });
-
-      // Also store individual signature for record-keeping
-      await window.db.collection('signatures').add({
-        fullName: fullName,
-        email: email,
-        city: city,
-        state: state,
-        zip: zip,
-        country: country,
-        signedAt: new Date(),
-      });
-
-      console.log('✅ Signature saved to Firebase');
-      alert("✅ Thank you for signing! Your signature has been recorded.");
-      form.reset();
-    } catch (error) {
-      console.error("Error submitting signature:", error);
-      alert("❌ Error: " + error.message + ". Please refresh and try again.");
-    }
-  });
-
-  // --- Share link helper ---
-  const shareUrl = document.getElementById('shareUrl');
-  if (shareUrl) {
-    shareUrl.value = window.location.href.split('#')[0];
-  }
-
-  const copyBtn = document.getElementById('copyBtn');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(shareUrl.value);
-        alert('✅ Link copied to clipboard!');
-      } catch (err) {
-        shareUrl.select();
-        document.execCommand('copy');
-        alert('✅ Link copied to clipboard!');
-      }
-    });
-  }
-
-  // PWA already configured via manifest.json - no additional install prompt needed
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+}, {passive: true});
 </script>
 
 </body>
