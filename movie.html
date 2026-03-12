@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>The Reclamation — The LivePay Movie</title>
-  <meta name="description" content="The Reclamation: An alternate reality science-fiction mini-series exploring a future where AI strengthens human dignity." />
+  <title>I-RIS — Illy Robotic Instruments Studios</title>
+  <meta name="description" content="I-RIS (Illy Robotic Instruments Studios) — Original content cultivated for major film platforms. Mini-series, IRL content, and more." />
   <meta name="theme-color" content="#4fd1ff">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="LivePay">
+  <meta name="apple-mobile-web-app-title" content="I-RIS">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>LP</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234fd1ff' width='100' height='100'/><text x='50%' y='50%' font-size='60' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>IR</text></svg>">
   <style>
     :root{
-      --bg:#0b0f1a;
+      --bg:#050810;
       --panel:#12182b;
       --panel2:#0f1526;
       --text:#ffffff;
@@ -23,14 +23,17 @@
       --border:rgba(255,255,255,.08);
       --shadow:0 20px 40px rgba(0,0,0,.4);
       --grad:linear-gradient(90deg,#4fd1ff,#7c5cff);
+      --iris-glow:linear-gradient(135deg,#4fd1ff,#7c5cff,#4fd1ff);
       --gold:linear-gradient(135deg,#ffd700,#ffed4e,#ffd700);
+      --neon-blue:#4fd1ff;
+      --neon-purple:#7c5cff;
     }
 
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
-      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.15), transparent 60%),
-                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.12), transparent 55%),
+      background:radial-gradient(1200px 800px at 50% -200px, rgba(79,209,255,.1), transparent 60%),
+                 radial-gradient(900px 600px at 90% 0%, rgba(124,92,255,.08), transparent 55%),
                  var(--bg);
       color:var(--text);
       min-height:100vh;
@@ -42,7 +45,7 @@
     .topbar{
       position:sticky;top:0;z-index:50;
       backdrop-filter: blur(12px);
-      background: rgba(11,15,26,.75);
+      background: rgba(5,8,16,.85);
       border-bottom:1px solid var(--border);
     }
     .topbar-inner{
@@ -103,151 +106,342 @@
       50% { box-shadow: 0 8px 25px rgba(79,209,255,.5); }
     }
 
-    /* Movie Hero */
-    .movie-hero{
+    /* Studio Hero */
+    .studio-hero{
       text-align:center;
-      margin:40px 0 40px;
-      padding:30px 20px;
-      background: radial-gradient(800px 400px at 50% 50%, rgba(255,215,0,.08), transparent 70%);
-      border-radius:20px;
+      margin:40px 0 50px;
+      padding:50px 20px;
+      background: radial-gradient(600px 400px at 50% 50%, rgba(79,209,255,.08), transparent 70%),
+                  radial-gradient(400px 300px at 50% 60%, rgba(124,92,255,.06), transparent 60%);
+      border-radius:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    .studio-hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:24px;
+      background: linear-gradient(180deg, rgba(79,209,255,.15), transparent 40%, transparent 60%, rgba(124,92,255,.1));
+      pointer-events:none;
     }
 
-    .premiere-badge{
+    .studio-logo{
+      width:120px;
+      height:120px;
+      margin:0 auto 24px;
+      border-radius:20px;
+      background: linear-gradient(135deg, rgba(79,209,255,.15), rgba(124,92,255,.15));
+      border:2px solid rgba(79,209,255,.3);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 0 40px rgba(79,209,255,.15), 0 0 80px rgba(124,92,255,.08);
+      position:relative;
+    }
+    .studio-logo svg{width:70px;height:70px;}
+
+    .studio-badge{
       display:inline-block;
-      padding:10px 20px;
+      padding:8px 20px;
       border-radius:999px;
-      background: var(--gold);
-      color:#000;
-      font-weight:900;
-      font-size:.9rem;
-      letter-spacing:1px;
+      background: linear-gradient(135deg, rgba(79,209,255,.2), rgba(124,92,255,.2));
+      border:1px solid rgba(79,209,255,.3);
+      color:var(--neon-blue);
+      font-weight:700;
+      font-size:.85rem;
+      letter-spacing:1.5px;
       text-transform:uppercase;
       margin-bottom:20px;
-      box-shadow: 0 10px 30px rgba(255,215,0,.3);
     }
 
-    .movie-title{
-      font-size: clamp(2.5rem, 7vw, 4.5rem);
-      margin: 0 0 16px;
+    .studio-title{
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      margin: 0 0 8px;
       font-weight:900;
-      letter-spacing:-1px;
+      letter-spacing:4px;
       line-height:1;
-      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
+      background: linear-gradient(135deg, #4fd1ff 0%, #ffffff 40%, #7c5cff 100%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
-      text-shadow: 0 0 40px rgba(255,255,255,.2);
     }
 
-    .movie-subtitle{
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
+    .studio-full-name{
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
       color:var(--muted2);
       font-weight:600;
-      margin-bottom:12px;
-      letter-spacing:.5px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      margin-bottom:24px;
     }
 
-    .movie-tagline{
-      font-size:1.05rem;
+    .studio-desc{
+      font-size:1.1rem;
       color:var(--muted);
-      max-width:700px;
-      margin:0 auto 30px;
-      line-height:1.6;
-      font-style:italic;
+      max-width:750px;
+      margin:0 auto;
+      line-height:1.8;
     }
-
-    /* Video Container */
-    .video-container{
-      max-width:800px;
-      margin:0 auto 40px;
-      border-radius:20px;
-      overflow:hidden;
-      box-shadow: 0 30px 60px rgba(0,0,0,.5), 0 0 0 1px var(--border);
-      background:#000;
-    }
-    .video-wrapper{
-      position:relative;
-      padding-bottom:177.78%; /* 9:16 aspect ratio for YouTube Shorts */
-      height:0;
-      overflow:hidden;
-    }
-    .video-wrapper iframe{
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      border:none;
-    }
+    .studio-desc strong{color:#fff;}
 
     /* Section styling */
     .section{
       background: linear-gradient(180deg, rgba(18,24,43,.95), rgba(15,21,38,.95));
-      padding: 32px;
+      padding: 40px 32px;
       border-radius: 20px;
       box-shadow: var(--shadow);
       border:1px solid var(--border);
-      margin-bottom:24px;
+      margin-bottom:32px;
     }
 
     .section-header{
       font-size:1.8rem;
       font-weight:900;
-      margin:0 0 20px;
+      margin:0 0 12px;
       text-align:center;
-      letter-spacing:-.5px;
+      letter-spacing:1px;
       text-transform:uppercase;
-      color:#fff;
+      background: var(--grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
     }
 
-    .section-subheader{
-      font-size:1.3rem;
-      font-weight:700;
+    .section-subtitle{
+      text-align:center;
       color:var(--muted2);
-      margin:28px 0 16px;
+      font-size:1rem;
+      margin:0 0 32px;
     }
 
-    .content-block{
-      background: rgba(11,15,26,.5);
+    /* Platform badges */
+    .platforms{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin:28px 0 0;
+    }
+    .platform-badge{
+      padding:8px 18px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
       border:1px solid var(--border);
-      border-radius:16px;
-      padding:24px;
-      margin:20px 0;
-      line-height:1.8;
       color:var(--muted);
-    }
-
-    .content-block p{
-      margin:0 0 16px;
-    }
-    .content-block p:last-child{
-      margin:0;
-    }
-
-    .content-block strong{
-      color:#fff;
       font-weight:700;
+      font-size:.85rem;
+      letter-spacing:.5px;
     }
 
-    .bullet-list{
-      list-style:none;
-      padding:0;
-      margin:20px 0;
+    /* Series Grid */
+    .series-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:32px;
     }
-    .bullet-list li{
-      padding:12px 0 12px 32px;
-      position:relative;
+
+    .series-card{
+      background: rgba(11,15,26,.6);
+      border:1px solid var(--border);
+      border-radius:20px;
+      overflow:hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .series-card:hover{
+      transform:translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
+    }
+
+    .series-card-header{
+      padding:28px 28px 20px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .series-icon{
+      width:56px;height:56px;
+      border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.5rem;
+      font-weight:900;
+      flex-shrink:0;
+    }
+    .series-icon.a{
+      background: linear-gradient(135deg, rgba(79,209,255,.2), rgba(79,209,255,.05));
+      border:1px solid rgba(79,209,255,.3);
+      color:var(--neon-blue);
+    }
+    .series-icon.b{
+      background: linear-gradient(135deg, rgba(124,92,255,.2), rgba(124,92,255,.05));
+      border:1px solid rgba(124,92,255,.3);
+      color:var(--neon-purple);
+    }
+
+    .series-info h3{
+      margin:0 0 4px;
+      font-size:1.4rem;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+    .series-info .series-label{
+      font-size:.85rem;
+      color:var(--muted2);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .series-desc{
+      padding:0 28px 20px;
       color:var(--muted);
       line-height:1.7;
-    }
-    .bullet-list li:before{
-      content:"▹";
-      position:absolute;
-      left:0;
-      color:#4fd1ff;
-      font-size:1.4rem;
-      font-weight:900;
+      font-size:.98rem;
     }
 
+    .series-video{
+      margin:0 20px 24px;
+      border-radius:16px;
+      overflow:hidden;
+      background:#000;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    }
+
+    .video-wrapper{
+      position:relative;
+      padding-bottom:177.78%;
+      height:0;
+      overflow:hidden;
+    }
+    .video-wrapper iframe{
+      position:absolute;
+      top:0;left:0;
+      width:100%;height:100%;
+      border:none;
+    }
+
+    .series-status{
+      padding:0 28px 24px;
+    }
+    .status-badge{
+      display:inline-block;
+      padding:6px 16px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:700;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+    }
+    .status-badge.streaming{
+      background: linear-gradient(135deg, rgba(0,200,100,.2), rgba(0,200,100,.05));
+      border:1px solid rgba(0,200,100,.3);
+      color:#00c864;
+    }
+    .status-badge.production{
+      background: linear-gradient(135deg, rgba(255,215,0,.2), rgba(255,215,0,.05));
+      border:1px solid rgba(255,215,0,.3);
+      color:#ffd700;
+    }
+
+    /* IRL Content Section */
+    .irl-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:24px;
+    }
+
+    .irl-card{
+      background: rgba(11,15,26,.6);
+      border:1px solid var(--border);
+      border-radius:20px;
+      overflow:hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .irl-card:hover{
+      transform:translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+
+    .irl-image{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      background: linear-gradient(135deg, rgba(79,209,255,.08), rgba(124,92,255,.08));
+    }
+
+    .irl-image-placeholder{
+      width:100%;
+      height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:3rem;
+      font-weight:900;
+      position:relative;
+      overflow:hidden;
+    }
+    .irl-image-placeholder.swami{
+      background: linear-gradient(135deg, #ff6b35, #ff4500, #ff6b35);
+      color:rgba(255,255,255,.9);
+    }
+    .irl-image-placeholder.jacob{
+      background: linear-gradient(135deg, #7c5cff, #4fd1ff, #7c5cff);
+      color:rgba(255,255,255,.9);
+    }
+    .irl-image-placeholder.milky{
+      background: linear-gradient(135deg, #8b6914, #c49a2a, #8b6914);
+      color:rgba(255,255,255,.9);
+    }
+    .irl-image-placeholder .overlay-text{
+      position:relative;z-index:1;
+      text-shadow: 0 2px 10px rgba(0,0,0,.3);
+      letter-spacing:1px;
+    }
+    .irl-image-placeholder::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,255,255,.15), transparent 50%);
+    }
+
+    .irl-body{
+      padding:24px;
+    }
+    .irl-body h3{
+      margin:0 0 4px;
+      font-size:1.2rem;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+    .irl-body .show-name{
+      font-size:1rem;
+      color:var(--neon-blue);
+      font-weight:700;
+      margin:0 0 12px;
+    }
+    .irl-body .show-desc{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.6;
+      margin:0;
+    }
+    .irl-number{
+      display:inline-flex;
+      align-items:center;justify-content:center;
+      width:28px;height:28px;
+      border-radius:50%;
+      background:var(--grad);
+      color:#fff;
+      font-weight:800;
+      font-size:.85rem;
+      margin-right:8px;
+      flex-shrink:0;
+    }
+    .irl-body .creator-row{
+      display:flex;
+      align-items:center;
+      margin-bottom:4px;
+    }
+
+    /* Emphasis */
     .emphasis-box{
       background: linear-gradient(135deg, rgba(79,209,255,.12), rgba(124,92,255,.12));
       border:2px solid rgba(79,209,255,.3);
@@ -263,6 +457,38 @@
       color:#fff;
       font-style:italic;
       margin:0;
+    }
+
+    .content-block{
+      background: rgba(11,15,26,.5);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      margin:20px 0;
+      line-height:1.8;
+      color:var(--muted);
+    }
+    .content-block strong{color:#fff;font-weight:700;}
+    .content-block p{margin:0 0 16px;}
+    .content-block p:last-child{margin:0;}
+
+    .bullet-list{
+      list-style:none;
+      padding:0;
+      margin:20px 0;
+    }
+    .bullet-list li{
+      padding:12px 0 12px 32px;
+      position:relative;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .bullet-list li:before{
+      content:"▹";
+      position:absolute;left:0;
+      color:#4fd1ff;
+      font-size:1.4rem;
+      font-weight:900;
     }
 
     .disclaimer-box{
@@ -282,6 +508,14 @@
       margin-bottom:12px;
     }
 
+    /* Divider */
+    .section-divider{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(79,209,255,.3), rgba(124,92,255,.3), transparent);
+      margin:48px 0;
+      border:none;
+    }
+
     footer{
       text-align:center;
       color:var(--muted2);
@@ -293,17 +527,15 @@
     }
 
     @media(max-width:768px){
-      .movie-title{font-size:2.2rem;}
+      .studio-title{font-size:2.8rem;letter-spacing:2px;}
       .section{padding:24px 20px;}
-      .video-wrapper{
-        padding-bottom:177.78%; /* Keep 9:16 for Shorts on mobile */
-      }
+      .irl-grid{grid-template-columns:1fr;}
+      .series-card-header{flex-direction:column;text-align:center;}
+      .video-wrapper{padding-bottom:177.78%;}
     }
 
     @media(min-width:769px){
-      .video-wrapper{
-        padding-bottom:56.25%; /* 16:9 aspect ratio for desktop */
-      }
+      .video-wrapper{padding-bottom:56.25%;}
     }
   </style>
 </head>
@@ -323,7 +555,7 @@
       <a class="chip demo" href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">🚀 LivePay Demo</a>
       <a class="chip" href="index.html">Home</a>
       <a class="chip" href="projections.html">Projections</a>
-      <a class="chip active" href="movie.html">Movie</a>
+      <a class="chip active" href="movie.html">I-RIS Studio</a>
       <a class="chip" href="index.html#goals">Policy Goals</a>
       <a class="chip" href="index.html#donate">Donate</a>
       <a class="chip" href="index.html#sign">Sign</a>
@@ -333,122 +565,206 @@
 
 <div class="container">
 
-  <!-- Hero Section -->
-  <section class="movie-hero">
-    <div class="premiere-badge">✦ Now Streaming ✦</div>
-    <h1 class="movie-title">THE RECLAMATION</h1>
-    <div class="movie-subtitle">An Alternate Reality Science-Fiction Mini-Series</div>
-    <p class="movie-tagline">
-      What if humanity acted early to ensure that the rise of artificial intelligence strengthened human dignity rather than replaced it?
+  <!-- ========== STUDIO HERO ========== -->
+  <section class="studio-hero">
+    <div class="studio-logo">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 8L88 28V72L50 92L12 72V28L50 8Z" stroke="url(#shieldGrad)" stroke-width="3" fill="rgba(79,209,255,.06)"/>
+        <circle cx="50" cy="42" r="14" stroke="#4fd1ff" stroke-width="2.5" fill="rgba(79,209,255,.1)"/>
+        <rect x="43" y="36" width="14" height="10" rx="2" fill="#4fd1ff" opacity=".4"/>
+        <circle cx="50" cy="41" r="4" fill="#4fd1ff"/>
+        <path d="M35 62H65" stroke="#7c5cff" stroke-width="1.5" opacity=".5"/>
+        <path d="M38 67H62" stroke="#7c5cff" stroke-width="1" opacity=".3"/>
+        <path d="M42 72H58" stroke="#7c5cff" stroke-width="1" opacity=".2"/>
+        <defs><linearGradient id="shieldGrad" x1="12" y1="8" x2="88" y2="92"><stop stop-color="#4fd1ff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs>
+      </svg>
+    </div>
+    <div class="studio-badge">A Division of Illy Robotics</div>
+    <h1 class="studio-title">I-RIS</h1>
+    <div class="studio-full-name">Illy Robotic Instruments Studios</div>
+    <p class="studio-desc">
+      <strong>I-RIS</strong> is the creative content division of <strong>Illy Robotics</strong>, focused on cultivating original content that can be marketed and distributed to major film and streaming platforms. From scripted mini-series to real-world creator content, I-RIS develops stories that bridge technology, culture, and human experience.
     </p>
+    <div class="platforms">
+      <span class="platform-badge">Tubi</span>
+      <span class="platform-badge">Netflix</span>
+      <span class="platform-badge">HBO</span>
+      <span class="platform-badge">Network Television</span>
+      <span class="platform-badge">Streaming Platforms</span>
+    </div>
   </section>
 
-  <!-- Video Player -->
-  <div class="video-container">
-    <div class="video-wrapper">
-      <iframe 
-        src="https://www.youtube.com/embed/Jo3ZVujhak0?autoplay=1&mute=1&loop=1&playlist=Jo3ZVujhak0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        title="The Reclamation - Official Trailer">
-      </iframe>
-    </div>
-  </div>
+  <hr class="section-divider">
 
-  <!-- Official Disclaimer -->
+  <!-- ========== MINI SERIES SECTION ========== -->
   <section class="section">
-    <h2 class="section-header">Official Disclaimer</h2>
-    
-    <div class="disclaimer-box">
-      <strong>NOTICE: SPECULATIVE FICTION</strong>
-      <em>The Reclamation</em> is a work of speculative science fiction set in an alternate future reality.
-    </div>
+    <h2 class="section-header">Mini Series</h2>
+    <p class="section-subtitle">Original scripted series produced by Illy Robotic Instruments Studios</p>
 
-    <div class="content-block">
-      <p>
-        The events, institutions, technologies, legislation, and outcomes depicted — including but not limited to <strong>LivePay</strong>, the <strong>Fair Data Ethics Act</strong>, and related systems of data ownership and compensation — <strong>do not currently exist in the real world as portrayed</strong>.
-      </p>
-      <p>
-        This series is not a documentary, prediction, or representation of current law, nor does it claim that the future shown is inevitable or guaranteed.
-      </p>
-      <p>
-        Instead, <em>The Reclamation</em> presents a <strong>"what if"</strong> scenario:
-      </p>
+    <div class="series-grid">
+
+      <!-- The Reclamation -->
+      <div class="series-card">
+        <div class="series-card-header">
+          <div class="series-icon a">A</div>
+          <div class="series-info">
+            <h3>The Reclamation</h3>
+            <div class="series-label">Project A — Sci-Fi Mini Series</div>
+          </div>
+        </div>
+        <div class="series-desc">
+          An alternate reality science-fiction mini-series exploring a future where humanity acted early to ensure 
+          that the rise of artificial intelligence strengthened human dignity rather than replaced it. 
+          Set in a world where data is treated as labor and innovation expands opportunity instead of concentrating power.
+        </div>
+        <div class="series-video">
+          <div class="video-wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/Jo3ZVujhak0?autoplay=0&mute=1&loop=1&playlist=Jo3ZVujhak0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen
+              title="The Reclamation — Official Trailer"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+        <div class="series-status">
+          <span class="status-badge streaming">● Now Streaming</span>
+        </div>
+      </div>
+
+      <!-- The Captains Quarters -->
+      <div class="series-card">
+        <div class="series-card-header">
+          <div class="series-icon b">B</div>
+          <div class="series-info">
+            <h3>The Captains Quarters</h3>
+            <div class="series-label">Series B — Mini Series</div>
+          </div>
+        </div>
+        <div class="series-desc">
+          A bold new mini-series produced by Illy Robotic Instruments Studios. Step inside The Captains Quarters 
+          for an immersive journey through stories that challenge convention and redefine the boundaries of 
+          independent storytelling.
+        </div>
+        <div class="series-video">
+          <div class="video-wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/-nH5V7X5jPY?autoplay=0&mute=1" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen
+              title="The Captains Quarters"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+        <div class="series-status">
+          <span class="status-badge production">● In Production</span>
+        </div>
+      </div>
+
     </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ========== IRL CONTENT SECTION ========== -->
+  <section class="section">
+    <h2 class="section-header">IRL Content</h2>
+    <p class="section-subtitle">Upcoming real-world original content from I-RIS creators</p>
+
+    <div class="irl-grid">
+
+      <!-- Swami Tsunami -->
+      <div class="irl-card">
+        <img class="irl-image" src="images/swami-tsunami.jpg" alt="Swami Tsunami">
+        <div class="irl-body">
+          <div class="creator-row">
+            <span class="irl-number">1</span>
+            <h3>Swami Tsunami</h3>
+          </div>
+          <p class="show-name">Live in Miami</p>
+          <p class="show-desc">
+            An electrifying IRL experience captured live from the heart of Miami. 
+            Swami Tsunami brings raw energy, unfiltered moments, and the pulse of the city to your screen.
+          </p>
+        </div>
+      </div>
+
+      <!-- JacobMedia -->
+      <div class="irl-card">
+        <div class="irl-image-placeholder jacob">
+          <span class="overlay-text">🎰 YOPOPPA</span>
+        </div>
+        <div class="irl-body">
+          <div class="creator-row">
+            <span class="irl-number">2</span>
+            <h3>JacobMedia</h3>
+          </div>
+          <p class="show-name">YoPoppas Cave</p>
+          <p class="show-desc">
+            Enter YoPoppas Cave — a high-energy creator hub where JacobMedia brings together gaming, 
+            entertainment, and community in one unpredictable IRL format.
+          </p>
+        </div>
+      </div>
+
+      <!-- MilkyMoMo -->
+      <div class="irl-card">
+        <div class="irl-image-placeholder milky">
+          <span class="overlay-text">💎 MILKY</span>
+        </div>
+        <div class="irl-body">
+          <div class="creator-row">
+            <span class="irl-number">3</span>
+            <h3>MilkyMoMo</h3>
+          </div>
+          <p class="show-name">Rizz Rate Dating</p>
+          <p class="show-desc">
+            A bold new dating and social experiment show hosted by MilkyMoMo. 
+            Contestants put their charisma to the test in real-time — comedy, chemistry, and pure entertainment collide.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ========== ABOUT I-RIS ========== -->
+  <section class="section">
+    <h2 class="section-header">About I-RIS</h2>
 
     <div class="emphasis-box">
       <p class="quote">
-        "What if humanity acted early to ensure that the rise of artificial intelligence strengthened human dignity rather than replaced it?"
+        Original stories. Independent vision. Built for global audiences.
       </p>
     </div>
 
     <div class="content-block">
       <p>
-        Any resemblance to real companies, technologies, or policies is used solely for narrative and thematic exploration. The story is intended to provoke thought, dialogue, and imagination — <strong>not to assert factual claims about existing systems</strong>.
+        <strong>Illy Robotic Instruments Studios (I-RIS)</strong> is the creative content arm of Illy Robotics, 
+        established to produce and distribute original entertainment across the most prominent film and streaming 
+        platforms in the world.
       </p>
-    </div>
-  </section>
-
-  <!-- Mission Statement -->
-  <section class="section">
-    <h2 class="section-header">Mission Statement</h2>
-    
-    <div class="emphasis-box">
-      <p class="quote">
-        The Reclamation exists to humanize the future.
+      <p>
+        Our mission is to cultivate stories that resonate — from high-concept science fiction to raw, 
+        unscripted IRL content — and bring them to audiences on <strong>Tubi, Netflix, HBO, Network Television</strong>, 
+        and beyond.
       </p>
     </div>
 
     <div class="content-block">
-      <p>
-        As artificial intelligence accelerates, society faces a defining question:
-      </p>
-      <p style="text-align:center;font-size:1.2rem;font-weight:700;color:#fff;margin:20px 0;">
-        Who benefits when human intelligence becomes automated?
-      </p>
-      <p>
-        Today, human behavior, creativity, and decision-making quietly power the world's most valuable technologies — often <strong>without transparency, compensation, or agency</strong> for the individuals who generate that value.
-      </p>
-    </div>
-
-    <h3 class="section-subheader">The Reclamation explores an alternate reality in which humanity chose a different path.</h3>
-
-    <div class="content-block">
-      <p>Through character-driven storytelling, the series imagines a world where:</p>
+      <p><strong>What sets I-RIS apart:</strong></p>
       <ul class="bullet-list">
-        <li>Human data is treated as labor, not exhaust</li>
-        <li>Technological progress and economic fairness are not opposites</li>
-        <li>Intelligence systems are accountable to the people who trained them</li>
-        <li>Innovation expands opportunity instead of concentrating power</li>
+        <li>A technology-first studio backed by the innovation pipeline of Illy Robotics</li>
+        <li>Original IP designed from day one for multi-platform distribution</li>
+        <li>A commitment to independent voices and underrepresented narratives</li>
+        <li>Bridging the gap between tech culture and mainstream entertainment</li>
       </ul>
     </div>
 
-    <div class="content-block">
-      <p>
-        This project is driven by a genuine concern that, without intentional design, AI may deepen inequality between the rich and the poor — <strong>not because of malice, but because of inertia</strong>.
-      </p>
-      <p style="font-size:1.1rem;font-weight:700;color:#fff;margin-top:20px;">
-        <em>The Reclamation</em> does not argue against AI.<br>
-        It argues for human continuity within an AI-driven world.
-      </p>
-    </div>
-
-    <h3 class="section-subheader">By making abstract policy questions emotionally tangible, the series aims to:</h3>
-
-    <div class="content-block">
-      <ul class="bullet-list">
-        <li>Spark public conversation</li>
-        <li>Inspire ethical innovation</li>
-        <li>Encourage proactive governance</li>
-        <li>And remind audiences that the future is still a choice</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- Core Ethos -->
-  <section class="section">
-    <h2 class="section-header">Core Ethos</h2>
-    
     <div class="emphasis-box" style="padding:32px;">
       <p class="quote" style="margin-bottom:20px;">Progress without equity is extraction.</p>
       <p class="quote" style="margin-bottom:20px;">Intelligence without dignity is hollow.</p>
@@ -457,7 +773,8 @@
   </section>
 
   <footer>
-    <strong>LivePay</strong> — Building a human-centered financial ecosystem where people benefit from the value they create.<br>
+    <strong>I-RIS</strong> — Illy Robotic Instruments Studios | A Division of Illy Robotics<br>
+    <span style="font-size:.85rem;color:var(--muted2);">Cultivating original content for the world's biggest platforms.</span><br>
     <a href="index.html" style="color:#4fd1ff;text-decoration:none;margin-top:10px;display:inline-block;">← Back to Main Petition</a>
   </footer>
 
