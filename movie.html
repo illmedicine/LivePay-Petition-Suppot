@@ -359,9 +359,9 @@
 
     /* Portrait Cards (for IRL/shows) */
     .show-card{
-      flex:0 0 240px;
+      flex:0 0 360px;
       scroll-snap-align:start;
-      border-radius:8px;
+      border-radius:12px;
       overflow:hidden;
       background:var(--surface);
       cursor:pointer;
@@ -369,8 +369,8 @@
       position:relative;
     }
     .show-card:hover{
-      transform:scale(1.05);
-      box-shadow:0 16px 40px rgba(0,0,0,.6);
+      transform:scale(1.04);
+      box-shadow:0 20px 50px rgba(0,0,0,.7);
       z-index:5;
     }
     .show-card-img{
@@ -383,42 +383,42 @@
     .show-card-overlay{
       position:absolute;
       bottom:0;left:0;right:0;
-      padding:60px 16px 16px;
-      background:linear-gradient(transparent,rgba(0,0,0,.95));
+      padding:80px 20px 22px;
+      background:linear-gradient(transparent,rgba(0,0,0,.92) 50%);
     }
     .show-card-badge{
       display:inline-block;
-      padding:2px 8px;border-radius:3px;
-      font-size:.65rem;font-weight:700;
+      padding:4px 10px;border-radius:4px;
+      font-size:.75rem;font-weight:700;
       text-transform:uppercase;letter-spacing:.5px;
-      margin-bottom:6px;
+      margin-bottom:8px;
     }
     .show-card-badge.irl{background:#e50914;color:#fff;}
     .show-card-badge.upcoming{background:var(--gold);color:#000;}
     .show-card-title{
-      font-size:1rem;font-weight:800;
-      margin-bottom:2px;
+      font-size:1.3rem;font-weight:800;
+      margin-bottom:4px;
     }
     .show-card-sub{
-      font-size:.8rem;color:var(--text-muted);
+      font-size:.9rem;color:var(--text-muted);
     }
     .show-card-desc{
-      font-size:.75rem;
-      color:rgba(255,255,255,.6);
-      line-height:1.45;
-      margin-top:8px;
+      font-size:.85rem;
+      color:rgba(255,255,255,.65);
+      line-height:1.5;
+      margin-top:10px;
       display:-webkit-box;
       -webkit-line-clamp:3;
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
     .show-rank{
-      position:absolute;top:12px;left:12px;
-      width:32px;height:32px;border-radius:6px;
-      background:rgba(0,0,0,.7);
+      position:absolute;top:16px;left:16px;
+      width:38px;height:38px;border-radius:8px;
+      background:rgba(0,0,0,.75);
       backdrop-filter:blur(4px);
       display:flex;align-items:center;justify-content:center;
-      font-weight:900;font-size:.9rem;
+      font-weight:900;font-size:1.1rem;
       border:1px solid rgba(255,255,255,.15);
     }
 
@@ -586,7 +586,7 @@
       .hero-desc{font-size:.95rem;max-width:100%;}
       .content-area{padding:0 20px;}
       .title-card{flex:0 0 320px;}
-      .show-card{flex:0 0 180px;}
+      .show-card{flex:0 0 280px;}
       .about-strip{padding:40px 20px;}
       .about-inner{grid-template-columns:1fr;}
       .footer-grid{grid-template-columns:1fr 1fr;}
@@ -595,7 +595,7 @@
     }
     @media(max-width:500px){
       .title-card{flex:0 0 85vw;}
-      .show-card{flex:0 0 55vw;}
+      .show-card{flex:0 0 75vw;}
       .hero-billboard{min-height:65vh;}
       .about-stats{grid-template-columns:1fr;}
     }
