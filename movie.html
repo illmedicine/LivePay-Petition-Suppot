@@ -146,7 +146,6 @@
       position:relative;
       width:100%;
       min-height:85vh;
-      display:flex;align-items:flex-end;
       overflow:hidden;
       background:#000;
     }
@@ -578,6 +577,126 @@
       -webkit-text-fill-color:transparent;
     }
 
+    /* ===== HERO SLIDE SYSTEM ===== */
+    .hero-slide{
+      position:absolute;inset:0;
+      display:flex;align-items:flex-end;
+      opacity:0;
+      transition:opacity 1.2s ease-in-out;
+      pointer-events:none;
+    }
+    .hero-slide.active{opacity:1;pointer-events:auto;}
+
+    .hero-indicators{
+      position:absolute;bottom:28px;right:48px;z-index:10;
+      display:flex;gap:10px;align-items:center;
+    }
+    .hero-dot{
+      width:48px;height:4px;border-radius:2px;
+      background:rgba(255,255,255,.25);
+      border:none;cursor:pointer;position:relative;overflow:hidden;
+      padding:0;transition:background .3s;
+    }
+    .hero-dot.active{background:rgba(255,255,255,.4);}
+    .hero-dot-fill{
+      position:absolute;top:0;left:0;bottom:0;width:100%;
+      background:#fff;
+      transform:scaleX(0);transform-origin:left;
+    }
+    .hero-dot.active .hero-dot-fill{
+      animation:dotFill var(--slide-dur,10s) linear forwards;
+    }
+    @keyframes dotFill{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+
+    /* ===== CSS GENERATED TRAILER ===== */
+    .hero-trailer-bg{position:absolute;inset:0;overflow:hidden;}
+    .trailer-scene{
+      position:absolute;inset:0;
+      opacity:0;
+    }
+    .trailer-scene:nth-child(1){
+      animation:sceneA 12s ease-in-out infinite;
+    }
+    .trailer-scene:nth-child(2){
+      animation:sceneB 12s ease-in-out infinite;
+    }
+    @keyframes sceneA{
+      0%,8%{opacity:1;}42%,50%{opacity:0;}58%{opacity:0;}100%{opacity:1;}
+    }
+    @keyframes sceneB{
+      0%,8%{opacity:0;}42%,50%{opacity:1;}92%,100%{opacity:0;}
+    }
+    .trailer-scene img{
+      width:100%;height:100%;object-fit:cover;
+      filter:brightness(.45) contrast(1.15) saturate(1.2);
+    }
+    .trailer-scene:nth-child(1) img{
+      animation:kb1 12s ease-in-out infinite alternate;
+    }
+    .trailer-scene:nth-child(2) img{
+      animation:kb2 12s ease-in-out infinite alternate;
+      object-position:center 20%;
+    }
+    @keyframes kb1{from{transform:scale(1);}to{transform:scale(1.15) translate(-2%,-1.5%);}}
+    @keyframes kb2{from{transform:scale(1.05) translate(1%,0);}to{transform:scale(1.18) translate(-1%,-2%);}}
+
+    .trailer-vignette{
+      position:absolute;inset:0;z-index:1;
+      background:radial-gradient(ellipse 70% 70% at center,transparent 20%,rgba(0,0,0,.75));
+    }
+    .trailer-warmth{
+      position:absolute;inset:0;z-index:1;
+      background:linear-gradient(135deg,rgba(200,150,50,.15),rgba(180,60,40,.1),transparent 60%);
+      mix-blend-mode:overlay;
+    }
+    .trailer-letterbox{position:absolute;inset:0;z-index:2;pointer-events:none;}
+    .trailer-letterbox::before,.trailer-letterbox::after{
+      content:'';position:absolute;left:0;right:0;height:6%;background:#000;
+    }
+    .trailer-letterbox::before{top:0;}
+    .trailer-letterbox::after{bottom:0;}
+
+    .trailer-titles{
+      position:absolute;inset:0;z-index:3;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:14px;pointer-events:none;
+    }
+    .trailer-titles span{
+      opacity:0;font-weight:900;text-transform:uppercase;
+      text-shadow:0 2px 30px rgba(0,0,0,.9);
+    }
+    .trailer-titles .tt-iris{
+      font-size:.85rem;letter-spacing:4px;color:var(--accent);
+      animation:ttReveal 12s infinite;animation-delay:.5s;
+    }
+    .trailer-titles .tt-show{
+      font-size:clamp(1.8rem,4.5vw,3.8rem);color:#fff;letter-spacing:3px;
+      animation:ttReveal 12s infinite;animation-delay:1.3s;
+    }
+    .trailer-titles .tt-creator{
+      font-size:.95rem;letter-spacing:3px;color:var(--gold);font-weight:700;
+      animation:ttReveal 12s infinite;animation-delay:2.2s;
+    }
+    @keyframes ttReveal{
+      0%,4%{opacity:0;filter:blur(8px);transform:scale(.95);}
+      10%,32%{opacity:1;filter:blur(0);transform:scale(1);}
+      40%,100%{opacity:0;filter:blur(4px);transform:scale(1.02);}
+    }
+
+    .show-card-badge.flagship{background:var(--iris-grad);color:#fff;font-size:.8rem;padding:5px 14px;}
+    .flagship-ribbon{
+      position:absolute;top:16px;right:16px;z-index:5;
+      background:var(--iris-grad);color:#fff;
+      font-size:.6rem;font-weight:800;letter-spacing:1.5px;
+      text-transform:uppercase;padding:5px 12px;border-radius:4px;
+      box-shadow:0 4px 15px rgba(79,209,255,.3);
+    }
+    .hero-title span.gold{
+      background:linear-gradient(135deg,#f5c518,#ffd700) !important;
+      -webkit-background-clip:text !important;
+      -webkit-text-fill-color:transparent !important;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media(max-width:900px){
       .nav-inner{padding:12px 20px;gap:16px;}
@@ -593,6 +712,8 @@
       .footer-grid{grid-template-columns:1fr 1fr;}
       .site-footer{padding:32px 20px;}
       .hero-billboard{min-height:70vh;}
+      .hero-indicators{right:20px;bottom:20px;}
+      .trailer-titles .tt-show{font-size:1.5rem;}
     }
     @media(max-width:500px){
       .title-card{flex:0 0 85vw;}
@@ -628,45 +749,105 @@
   </div>
 </nav>
 
-<!-- ===== HERO BILLBOARD ===== -->
-<section class="hero-billboard">
-  <div class="hero-bg"></div>
-  <div class="hero-iframe-bg">
-    <iframe 
-      src="https://www.youtube.com/embed/Jo3ZVujhak0?autoplay=1&mute=1&loop=1&playlist=Jo3ZVujhak0&controls=0&showinfo=0&modestbranding=1" 
-      allow="autoplay;encrypted-media" 
-      loading="lazy"
-      title="The Reclamation Background">
-    </iframe>
+<!-- ===== HERO BILLBOARD (Alternating) ===== -->
+<section class="hero-billboard" id="hero-billboard">
+
+  <!-- SLIDE 1: The Reclamation -->
+  <div class="hero-slide active" id="slide-reclamation">
+    <div class="hero-bg"></div>
+    <div class="hero-iframe-bg">
+      <iframe 
+        src="https://www.youtube.com/embed/Jo3ZVujhak0?autoplay=1&mute=1&loop=1&playlist=Jo3ZVujhak0&controls=0&showinfo=0&modestbranding=1" 
+        allow="autoplay;encrypted-media" 
+        loading="lazy"
+        title="The Reclamation Background">
+      </iframe>
+    </div>
+    <div class="hero-content">
+      <div class="hero-studio-tag">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        I-RIS ORIGINAL
+      </div>
+      <h1 class="hero-title">
+        <span>MINI SERIES</span>
+        THE RECLAMATION
+      </h1>
+      <div class="hero-meta">
+        <span class="hero-badge new">New Episodes</span>
+        <span class="hero-badge series">Sci-Fi</span>
+        <span class="hero-meta-text">Season 1</span>
+        <span class="hero-meta-text">•</span>
+        <span class="hero-meta-text">2025</span>
+        <span class="hero-meta-text">•</span>
+        <span class="hero-meta-text">TV-14</span>
+      </div>
+      <p class="hero-desc">
+        What if humanity acted early to ensure that the rise of artificial intelligence strengthened 
+        human dignity rather than replaced it? An alternate reality where data is treated as labor 
+        and innovation expands opportunity.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-play" href="#watch-reclamation">▶ Play</a>
+        <a class="btn btn-info" href="#originals">ℹ More Info</a>
+      </div>
+    </div>
   </div>
-  <div class="hero-content">
-    <div class="hero-studio-tag">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      I-RIS ORIGINAL
+
+  <!-- SLIDE 2: House of Young — CSS Generated Trailer -->
+  <div class="hero-slide" id="slide-hoy">
+    <div class="hero-bg"></div>
+    <div class="hero-trailer-bg">
+      <div class="trailer-scene">
+        <img src="images/ashlee-young-1.jpg" alt="Ashlee Young">
+      </div>
+      <div class="trailer-scene">
+        <img src="images/ashlee-young-2.jpg" alt="Ashlee Young">
+      </div>
+      <div class="trailer-vignette"></div>
+      <div class="trailer-warmth"></div>
+      <div class="trailer-letterbox"></div>
+      <div class="trailer-titles">
+        <span class="tt-iris">I-RIS Original Series</span>
+        <span class="tt-show">House of Young</span>
+        <span class="tt-creator">Creator: Ashlee Young</span>
+      </div>
     </div>
-    <h1 class="hero-title">
-      <span>MINI SERIES</span>
-      THE RECLAMATION
-    </h1>
-    <div class="hero-meta">
-      <span class="hero-badge new">New Episodes</span>
-      <span class="hero-badge series">Sci-Fi</span>
-      <span class="hero-meta-text">Season 1</span>
-      <span class="hero-meta-text">•</span>
-      <span class="hero-meta-text">2025</span>
-      <span class="hero-meta-text">•</span>
-      <span class="hero-meta-text">TV-14</span>
-    </div>
-    <p class="hero-desc">
-      What if humanity acted early to ensure that the rise of artificial intelligence strengthened 
-      human dignity rather than replaced it? An alternate reality where data is treated as labor 
-      and innovation expands opportunity.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-play" href="#watch-reclamation">▶ Play</a>
-      <a class="btn btn-info" href="#originals">ℹ More Info</a>
+    <div class="hero-content">
+      <div class="hero-studio-tag">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        I-RIS ORIGINAL SERIES
+      </div>
+      <h1 class="hero-title">
+        <span class="gold">FLAGSHIP IRL SHOW</span>
+        HOUSE OF YOUNG
+      </h1>
+      <div class="hero-meta">
+        <span class="hero-badge new" style="background:var(--gold);color:#000;">Flagship</span>
+        <span class="hero-badge series" style="background:#e50914;">Reality</span>
+        <span class="hero-meta-text">Season 1</span>
+        <span class="hero-meta-text">•</span>
+        <span class="hero-meta-text">2026</span>
+        <span class="hero-meta-text">•</span>
+        <span class="hero-meta-text">TV-14</span>
+      </div>
+      <p class="hero-desc">
+        Mastermind Ashlee Young takes you behind the velvet rope of Vegas's most eccentric 
+        home renovations. Balancing a roster of demanding VIPs and a fiery crew of gorgeous 
+        designers, it's a fast-paced blend of luxury, team drama, and pure hustle.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-play" href="#irl">▶ Watch Trailer</a>
+        <a class="btn btn-info" href="#irl">ℹ More Info</a>
+      </div>
     </div>
   </div>
+
+  <!-- Slide Indicators -->
+  <div class="hero-indicators">
+    <button class="hero-dot active" data-slide="0" aria-label="The Reclamation"><span class="hero-dot-fill"></span></button>
+    <button class="hero-dot" data-slide="1" aria-label="House of Young"><span class="hero-dot-fill"></span></button>
+  </div>
+
 </section>
 
 <!-- ===== CONTENT AREA ===== -->
@@ -756,10 +937,23 @@
 
     <div class="card-scroll">
 
+      <!-- House of Young — FLAGSHIP -->
+      <div class="show-card" id="hoy-section">
+        <img class="show-card-img" src="images/ashlee-young-1.jpg" alt="House of Young Creator: Ashlee Young">
+        <span class="show-rank">1</span>
+        <span class="flagship-ribbon">I-RIS Original Series</span>
+        <div class="show-card-overlay">
+          <div class="show-card-badge flagship">Flagship Original</div>
+          <div class="show-card-title">House of Young</div>
+          <div class="show-card-sub">Creator: Ashlee Young</div>
+          <div class="show-card-desc">Mastermind Ashlee Young takes you behind the velvet rope of Vegas's most eccentric home renovations. Balancing a roster of demanding VIPs and a fiery crew of gorgeous designers, it's a fast-paced blend of luxury, team drama, and pure hustle.</div>
+        </div>
+      </div>
+
       <!-- Swami Tsunami -->
       <div class="show-card">
         <img class="show-card-img" src="images/swami-tsunami.jpg" alt="Swami Tsunami - Live in Miami">
-        <span class="show-rank">1</span>
+        <span class="show-rank">2</span>
         <div class="show-card-overlay">
           <div class="show-card-badge irl">IRL Original</div>
           <div class="show-card-title">Live in Miami</div>
@@ -771,7 +965,7 @@
       <!-- JacobMedia -->
       <div class="show-card">
         <img class="show-card-img" src="images/yopoppa-cave.png" alt="JacobMedia - YoPoppas Cave">
-        <span class="show-rank">2</span>
+        <span class="show-rank">3</span>
         <div class="show-card-overlay">
           <div class="show-card-badge irl">IRL Original</div>
           <div class="show-card-title">YoPoppas Cave</div>
@@ -783,7 +977,7 @@
       <!-- MilkyMoMo -->
       <div class="show-card">
         <img class="show-card-img" src="images/milky-momo.png" alt="MilkyMoMo - Rizz Rate Dating">
-        <span class="show-rank">3</span>
+        <span class="show-rank">4</span>
         <div class="show-card-overlay">
           <div class="show-card-badge upcoming">Coming Soon</div>
           <div class="show-card-title">Rizz Rate Dating</div>
@@ -848,7 +1042,7 @@
         <div class="stat-label">Original Series</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">3</div>
+        <div class="stat-num">4</div>
         <div class="stat-label">IRL Shows</div>
       </div>
       <div class="stat-card">
@@ -879,6 +1073,7 @@
     </div>
     <div class="footer-col">
       <h4>IRL Content</h4>
+      <a href="#hoy-section">House of Young — Ashlee Young</a>
       <a href="#">Swami Tsunami — Live in Miami</a>
       <a href="#">JacobMedia — YoPoppas Cave</a>
       <a href="#">MilkyMoMo — Rizz Rate Dating</a>
@@ -903,6 +1098,45 @@ const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, {passive: true});
+
+// ===== HERO SLIDE ALTERNATION =====
+(function() {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  const INTERVAL = 10000;
+  let current = 0;
+  let timer = null;
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    dots.forEach(d => {
+      const fill = d.querySelector('.hero-dot-fill');
+      if (fill) { fill.style.animation = 'none'; fill.offsetHeight; fill.style.animation = ''; }
+    });
+  }
+
+  function next() {
+    goTo((current + 1) % slides.length);
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, INTERVAL);
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goTo(i);
+      startTimer();
+    });
+  });
+
+  startTimer();
+})();
 </script>
 
 </body>
