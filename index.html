@@ -697,6 +697,145 @@
       -webkit-text-fill-color:transparent !important;
     }
 
+    /* Clickable show cards */
+    a.show-card{text-decoration:none;color:inherit;display:block;}
+
+    /* ===== IRIS VISION SECTION ===== */
+    .iris-vision{
+      background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+      border-top:1px solid var(--border);
+      padding:80px 48px;
+      margin-top:32px;
+    }
+    .iris-vision-inner{
+      max-width:1400px;margin:auto;
+      text-align:center;
+    }
+    .iris-vision-inner h2{
+      font-size:2.4rem;font-weight:900;margin-bottom:12px;
+    }
+    .iris-vision-inner h2 span{
+      background:var(--iris-grad);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .iris-vision-inner .vision-subtitle{
+      color:var(--text-muted);font-size:1.1rem;line-height:1.6;
+      max-width:800px;margin:0 auto 40px;
+    }
+    .iris-vision-inner .vision-subtitle strong{color:#fff;}
+    .vision-infographic{
+      width:100%;max-width:1100px;margin:0 auto 48px;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 8px 40px rgba(0,0,0,.4);
+    }
+    .vision-infographic img{
+      width:100%;height:auto;display:block;
+    }
+    .vision-pillars{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:28px;
+      margin-top:48px;
+    }
+    .vision-pillar{
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:36px 28px;
+      text-align:left;
+      transition:transform .25s,box-shadow .25s;
+    }
+    .vision-pillar:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 30px rgba(0,0,0,.4);
+    }
+    .vision-pillar-icon{
+      width:52px;height:52px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:18px;font-size:1.5rem;
+    }
+    .vision-pillar-icon.creators{background:linear-gradient(135deg,#4fd1ff33,#7c5cff33);}
+    .vision-pillar-icon.networks{background:linear-gradient(135deg,#e5091433,#f5c51833);}
+    .vision-pillar-icon.fans{background:linear-gradient(135deg,#46d36933,#4fd1ff33);}
+    .vision-pillar h3{
+      font-size:1.2rem;font-weight:800;margin-bottom:10px;
+    }
+    .vision-pillar ul{
+      list-style:none;padding:0;
+    }
+    .vision-pillar ul li{
+      color:var(--text-muted);font-size:.9rem;line-height:1.7;
+      padding-left:20px;position:relative;
+    }
+    .vision-pillar ul li::before{
+      content:"\2713";position:absolute;left:0;
+      color:var(--accent);font-weight:700;
+    }
+
+    /* ===== NETWORK BADGES ===== */
+    .network-badges{
+      background:var(--surface);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      padding:48px;
+    }
+    .network-badges-inner{
+      max-width:1400px;margin:auto;text-align:center;
+    }
+    .network-badges-inner h3{
+      font-size:1rem;font-weight:700;text-transform:uppercase;
+      letter-spacing:2px;color:var(--text-muted);margin-bottom:28px;
+    }
+    .badge-row{
+      display:flex;flex-wrap:wrap;gap:20px;
+      justify-content:center;align-items:center;
+    }
+    .network-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 24px;border-radius:12px;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      font-weight:700;font-size:.95rem;
+      color:var(--text-muted);
+      transition:all .2s;
+    }
+    .network-badge:hover{
+      border-color:var(--accent);color:#fff;
+      transform:translateY(-2px);
+      box-shadow:0 4px 15px rgba(79,209,255,.15);
+    }
+    .network-badge svg{width:24px;height:24px;flex-shrink:0;}
+    .network-badge .badge-dot{
+      width:8px;height:8px;border-radius:50%;flex-shrink:0;
+    }
+    .network-badge .badge-dot.active{background:var(--green);}
+    .network-badge .badge-dot.target{background:var(--gold);}
+
+    /* ===== FOUNDER VISION ===== */
+    .founder-vision{
+      padding:80px 48px;
+      background:var(--bg);
+    }
+    .founder-vision-inner{
+      max-width:900px;margin:auto;text-align:center;
+    }
+    .founder-vision-inner blockquote{
+      font-size:1.3rem;line-height:1.7;
+      color:rgba(255,255,255,.85);
+      font-style:italic;
+      border-left:4px solid;
+      border-image:var(--iris-grad) 1;
+      padding:20px 0 20px 28px;
+      text-align:left;
+      margin:0 0 20px;
+    }
+    .founder-vision-inner .attribution{
+      font-size:.9rem;color:var(--text-muted);font-weight:600;
+      text-align:left;padding-left:28px;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media(max-width:900px){
       .nav-inner{padding:12px 20px;gap:16px;}
@@ -711,6 +850,10 @@
       .about-inner{grid-template-columns:1fr;}
       .footer-grid{grid-template-columns:1fr 1fr;}
       .site-footer{padding:32px 20px;}
+      .iris-vision{padding:48px 20px;}
+      .vision-pillars{grid-template-columns:1fr;}
+      .network-badges{padding:32px 20px;}
+      .founder-vision{padding:48px 20px;}
       .hero-billboard{min-height:70vh;}
       .hero-indicators{right:20px;bottom:20px;}
       .trailer-titles .tt-show{font-size:1.5rem;}
@@ -738,12 +881,13 @@
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="#originals">Originals</a></li>
       <li><a href="#irl">IRL Shows</a></li>
+      <li><a href="#iris-vision">For Creators</a></li>
+      <li><a href="#networks">For Networks</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="petition.html">LivePay Petition</a></li>
-      <li><a href="projections.html">Projections</a></li>
     </ul>
     <div class="nav-right">
-      <a class="btn btn-outline btn-sm" href="petition.html">Back to LivePay</a>
+      <a class="btn btn-outline btn-sm" href="petition.html">LivePay</a>
       <a class="btn btn-primary btn-sm" href="petition.html#donate">Support I-RIS</a>
     </div>
   </div>
@@ -942,7 +1086,7 @@
     <div class="card-scroll">
 
       <!-- House of Young — FLAGSHIP -->
-      <div class="show-card" id="hoy-section">
+      <a class="show-card" id="hoy-section" href="movie/HouseOfYoung">
         <img class="show-card-img" src="images/ashlee-young-1.jpg" alt="House of Young Creator: Ashlee Young">
         <span class="show-rank">1</span>
         <span class="flagship-ribbon">I-RIS Original Series</span>
@@ -952,10 +1096,10 @@
           <div class="show-card-sub">Creator: Ashlee Young</div>
           <div class="show-card-desc">Mastermind Ashlee Young takes you behind the velvet rope of Vegas's most eccentric home renovations. Balancing a roster of demanding VIPs and a fiery crew of gorgeous designers, it's a fast-paced blend of luxury, team drama, and pure hustle.</div>
         </div>
-      </div>
+      </a>
 
       <!-- Swami Tsunami -->
-      <div class="show-card">
+      <a class="show-card" href="movie/SwamiTsunami">
         <img class="show-card-img" src="images/swami-tsunami.jpg" alt="Swami Tsunami - Live in Miami">
         <span class="show-rank">2</span>
         <div class="show-card-overlay">
@@ -964,10 +1108,10 @@
           <div class="show-card-sub">Swami Tsunami</div>
           <div class="show-card-desc">An electrifying IRL experience captured live from the heart of Miami. Raw energy, unfiltered moments, and the pulse of the city.</div>
         </div>
-      </div>
+      </a>
 
       <!-- JacobMedia -->
-      <div class="show-card">
+      <a class="show-card" href="movie/YoPoppaCave">
         <img class="show-card-img" src="images/yopoppa-cave.png" alt="JacobMedia - YoPoppas Cave">
         <span class="show-rank">3</span>
         <div class="show-card-overlay">
@@ -976,10 +1120,10 @@
           <div class="show-card-sub">JacobMedia</div>
           <div class="show-card-desc">Enter YoPoppas Cave — a high-energy creator hub blending gaming, entertainment, and community in one unpredictable IRL format.</div>
         </div>
-      </div>
+      </a>
 
       <!-- MilkyMoMo -->
-      <div class="show-card">
+      <a class="show-card" href="movie/RizzRateDating">
         <img class="show-card-img" src="images/milky-momo.png" alt="MilkyMoMo - Rizz Rate Dating">
         <span class="show-rank">4</span>
         <div class="show-card-overlay">
@@ -988,7 +1132,7 @@
           <div class="show-card-sub">MilkyMoMo</div>
           <div class="show-card-desc">A bold dating and social experiment show where contestants put their charisma to the test in real-time. Comedy, chemistry, and pure entertainment.</div>
         </div>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -1013,24 +1157,168 @@
 
 </div>
 
+<!-- ===== THE IRIS VISION: BRIDGING THE GAP ===== -->
+<section class="iris-vision" id="iris-vision">
+  <div class="iris-vision-inner">
+    <h2>The <span>IRIS</span> Vision</h2>
+    <p class="vision-subtitle">
+      The creator economy is fractured. Creators are forced to choose between 
+      <strong>exclusive subscription networks</strong> that offer revenue but lock content behind paywalls — 
+      costing up to 80% of their audience — and <strong>free social platforms</strong> that offer reach 
+      but no sustainable income. <strong>I-RIS is the bridge.</strong>
+    </p>
+
+    <!-- Infographic -->
+    <div class="vision-infographic">
+      <img src="images/iris-bridge-infographic.png" alt="The IRIS Vision — Bridging the gap between exclusive networks and free platforms. I-RIS is the Creator Incubator and Network Scaler.">
+    </div>
+
+    <h2 style="font-size:1.6rem;margin-bottom:8px;">The First Platform of Its Kind</h2>
+    <p class="vision-subtitle" style="margin-bottom:32px;">
+      I-RIS doesn't ask creators to choose. We built a <strong>Creator Incubator &amp; Network Scaler</strong> 
+      that lets creators grow their brand while driving value back to the networks and studios that invest in them — 
+      all while keeping fans connected through a single unified experience.
+    </p>
+
+    <div class="vision-pillars">
+      <!-- FOR CREATORS -->
+      <div class="vision-pillar">
+        <div class="vision-pillar-icon creators">🎬</div>
+        <h3>For Creators</h3>
+        <ul>
+          <li>Non-exclusionary contracts — keep your content everywhere</li>
+          <li>Multi-stream outlets to maximize reach &amp; revenue</li>
+          <li>Creator's Corner — your personal I-RIS studio dashboard</li>
+          <li>Scale your brand with network-level production support</li>
+          <li>All social &amp; original content managed in one place</li>
+        </ul>
+      </div>
+      <!-- FOR NETWORKS -->
+      <div class="vision-pillar">
+        <div class="vision-pillar-icon networks">📡</div>
+        <h3>For Networks &amp; Studios</h3>
+        <ul>
+          <li>Talent cultivation pipeline — discover the next breakout star</li>
+          <li>Dedicated Network Page on the I-RIS platform</li>
+          <li>Featured placement on the I-RIS homepage</li>
+          <li>Drive viewership back to your network</li>
+          <li>Co-produce original content with proven creators</li>
+        </ul>
+      </div>
+      <!-- FOR FANS -->
+      <div class="vision-pillar">
+        <div class="vision-pillar-icon fans">🔥</div>
+        <h3>For Fans</h3>
+        <ul>
+          <li>Super Fan Corner — exclusive access &amp; community perks</li>
+          <li>Single unified page for all creator content</li>
+          <li>Direct community interaction with your favorite creators</li>
+          <li>Never miss a stream, premiere, or live event</li>
+          <li>Support creators directly through the platform</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NETWORK PARTNER BADGES ===== -->
+<section class="network-badges" id="networks">
+  <div class="network-badges-inner">
+    <h3>Networks &amp; Platforms We Work With</h3>
+    <div class="badge-row">
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 18.5h3l2-13h-3l-2 13zm5.5 0h3l2-13h-3l-2 13zm5.5 0h3l2-13h-3l-2 13zm5.5 0h3l1-6.5-3-6.5h-3l2 6.5-2 6.5z"/></svg>
+        <span class="badge-dot active"></span>
+        Tubi
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#E50914"><path d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596.21.59.822 1.09 1.36.298.168-.245.263-.59.388-.89l3.91-11.03L22.2 5l-3.896 10.985L14.654 24c-.203.573-.63.882-1.23.632-.098-.04-.19-.098-.263-.162C9.224 15.876 6.678 8.563 3.652.006L3.65 0h1.749z"/></svg>
+        <span class="badge-dot target"></span>
+        Netflix
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#B9A1FF"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#000">HBO</text></svg>
+        <span class="badge-dot target"></span>
+        HBO
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#00A8E1"><path d="M2 4h20v16H2V4zm2 2v12h16V6H4zm3 3h2v6H7V9zm4 0h2v6h-2V9zm4 0h2v6h-2V9z"/></svg>
+        <span class="badge-dot target"></span>
+        Prime Video
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#9146FF"><path d="M4.264 3L3 6.654v13.284h4.667V22h2.56l2.5-2.062h3.833L21 15.604V3H4.264zm1.485 1.5h13.5v10.146l-2.833 2.854H12l-2.5 2.063v-2.063H5.75V4.5zM10 7.5v5h1.5v-5H10zm4 0v5h1.5v-5H14z"/></svg>
+        <span class="badge-dot active"></span>
+        Twitch
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        <span class="badge-dot active"></span>
+        YouTube
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        <span class="badge-dot active"></span>
+        Instagram
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="#4267B2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <span class="badge-dot active"></span>
+        Facebook
+      </div>
+      <div class="network-badge">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15" text-anchor="middle" font-size="7" font-weight="bold" fill="currentColor">TV</text></svg>
+        <span class="badge-dot target"></span>
+        Network TV
+      </div>
+    </div>
+    <p style="margin-top:16px;font-size:.8rem;color:var(--text-dim);">
+      <span class="badge-dot active" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);vertical-align:middle;"></span> Active &nbsp;&nbsp;
+      <span class="badge-dot target" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);vertical-align:middle;"></span> Target Platform
+    </p>
+  </div>
+</section>
+
+<!-- ===== FOUNDER'S VISION ===== -->
+<section class="founder-vision">
+  <div class="founder-vision-inner">
+    <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:24px;">The Founder's <span style="background:var(--iris-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Belief</span></h2>
+    <blockquote>
+      "Creators shouldn't have to choose between reaching their audience and getting paid fairly. 
+      The current system forces an impossible choice — lock your content behind a paywall and lose 80% of your fans, 
+      or go free and struggle to sustain your craft. I-RIS was built to end that trade-off. We believe in 
+      non-exclusionary contracts, multi-platform distribution, and giving every creator the studio-level tools 
+      they need to scale their brand — without giving up ownership of their voice. This isn't just a platform. 
+      It's the bridge the creator economy has been waiting for."
+    </blockquote>
+    <p class="attribution">— Founder &amp; CEO, Illy Robotics / I-RIS</p>
+  </div>
+</section>
+
 <!-- ===== ABOUT STRIP ===== -->
 <section class="about-strip" id="about">
   <div class="about-inner">
     <div class="about-text">
       <h2>About <span>I-RIS</span></h2>
       <p>
-        <strong>Illy Robotic Instruments Studios (I-RIS)</strong> is the film production and content 
-        division of Illy Robotics — built to develop, produce, and distribute original entertainment 
-        to global audiences.
+        <strong>Illy Robotic Instruments Studios (I-RIS)</strong> is the film production, content, and 
+        creator incubation division of Illy Robotics — built to develop, produce, and distribute original 
+        entertainment while empowering the creators who make it.
       </p>
       <p>
-        Like Zeus Network and Tubi, I-RIS cultivates original programming — from scripted sci-fi 
-        mini-series to raw IRL creator content — designed for the world's biggest streaming platforms 
-        and network television.
+        Unlike traditional networks that demand exclusivity, I-RIS operates on a 
+        <strong>non-exclusionary model</strong>. Creators keep their content everywhere — social media, 
+        streaming platforms, and live — while gaining access to studio-level production, a dedicated 
+        Creator's Corner dashboard, and a direct pipeline to major networks.
       </p>
       <p>
-        Our mission: <strong>bring independent, technology-driven stories to mainstream audiences</strong> 
-        and prove that original voices belong on the same stage as major studios.
+        Our mission: <strong>bridge the gap between creators, networks, and fans</strong> — proving that 
+        original voices belong on the same stage as major studios, without sacrificing reach, revenue, or community.
+      </p>
+      <p>
+        I-RIS cultivates original programming — from scripted sci-fi mini-series to raw IRL creator content — 
+        designed for the world's biggest streaming platforms and network television. We are the 
+        <strong>first platform to function as both a creator incubator and a network scaler</strong>.
       </p>
       <div class="about-platforms">
         <span>Tubi</span>
@@ -1038,6 +1326,9 @@
         <span>HBO</span>
         <span>Network TV</span>
         <span>Prime Video</span>
+        <span>YouTube</span>
+        <span>Twitch</span>
+        <span>Instagram</span>
       </div>
     </div>
     <div class="about-stats">
@@ -1050,8 +1341,8 @@
         <div class="stat-label">IRL Shows</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num">5+</div>
-        <div class="stat-label">Platforms Targeted</div>
+        <div class="stat-num">9+</div>
+        <div class="stat-label">Platform Partners</div>
       </div>
       <div class="stat-card">
         <div class="stat-num">∞</div>
@@ -1068,6 +1359,7 @@
       <h4>I-RIS</h4>
       <a href="#originals">Originals</a>
       <a href="#irl">IRL Shows</a>
+      <a href="#iris-vision">The IRIS Vision</a>
       <a href="#about">About the Studio</a>
     </div>
     <div class="footer-col">
@@ -1076,23 +1368,24 @@
       <a href="#">The Captains Quarters</a>
     </div>
     <div class="footer-col">
-      <h4>IRL Content</h4>
-      <a href="#hoy-section">House of Young — Ashlee Young</a>
-      <a href="#">Swami Tsunami — Live in Miami</a>
-      <a href="#">JacobMedia — YoPoppas Cave</a>
-      <a href="#">MilkyMoMo — Rizz Rate Dating</a>
+      <h4>Creator Corners</h4>
+      <a href="movie/HouseOfYoung">House of Young — Ashlee Young</a>
+      <a href="movie/SwamiTsunami">Swami Tsunami — Live in Miami</a>
+      <a href="movie/YoPoppaCave">JacobMedia — YoPoppas Cave</a>
+      <a href="movie/RizzRateDating">MilkyMoMo — Rizz Rate Dating</a>
     </div>
     <div class="footer-col">
-      <h4>LivePay</h4>
-      <a href="petition.html">Petition</a>
+      <h4>Platform</h4>
+      <a href="#iris-vision">For Creators</a>
+      <a href="#networks">For Networks</a>
+      <a href="petition.html">LivePay Petition</a>
       <a href="projections.html">Projections</a>
-      <a href="petition.html#donate">Donate</a>
-      <a href="https://illmedicine.github.io/LivePay/" target="_blank" rel="noopener">Demo</a>
+      <a href="petition.html#donate">Support I-RIS</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span class="footer-logo">I-RIS</span>
-    <p>&copy; 2025 Illy Robotic Instruments Studios. A division of Illy Robotics. All rights reserved.</p>
+    <p>&copy; 2026 Illy Robotic Instruments Studios. A division of Illy Robotics. All rights reserved.</p>
   </div>
 </footer>
 

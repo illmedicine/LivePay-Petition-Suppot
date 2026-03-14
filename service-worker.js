@@ -3,9 +3,7 @@
  * Enables offline support and app-like experience
  */
 
-// Use timestamp for cache busting - update this when deploying new features
-const CACHE_VERSION = '2026-02-01-001';
-const CACHE_NAME = `livepay-v${CACHE_VERSION}`;
+const CACHE_NAME = 'livepay-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -40,7 +38,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - network first for HTML, cache for other assets
+// Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
@@ -68,39 +66,10 @@ self.addEventListener('fetch', (event) => {
     );
   }
 
-  // HTML files - network first to always get latest content
-  if (request.url.endsWith('.html') || request.url === self.location.origin + '/' || request.url === self.location.origin) {
-    return event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // Cache the new version
-          if (response.ok) {
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          // Fallback to cache if offline
-          return caches.match(request);
-        })
-    );
-  }
-
-  // Static assets (CSS, JS, images) - cache first, fallback to network
+  // Static assets - cache first, fallback to network
   event.respondWith(
     caches.match(request).then((response) => {
       if (response) {
-        // Fetch in background to update cache
-        fetch(request).then((fetchedResponse) => {
-          if (fetchedResponse && fetchedResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, fetchedResponse);
-            });
-          }
-        }).catch(() => {});
         return response;
       }
 
